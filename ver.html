@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -88,25 +88,26 @@
 
         /* ------------------------------------------------------------- */
         
-        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Estirado Total de Imagen) */
+        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Estirado Exclusivo a lo Ancho) */
         @media (max-width: 767px) {
             body {
                 padding: 0px;
             }
             .viewer-box img.main-img { 
-                width: 100vw !important;        /* Ocupa el 100% del ancho real del celular */
+                width: 100vw !important;        /* ↔️ RETOQUE: Forzado al 100% del ancho real de la pantalla del celular */
                 max-width: 100% !important;
-                height: 100vh !important;       /* 🔥 Ocupa el 100% del alto real de la pantalla del celular */
-                object-fit: fill !important;    /* 🔼 RETOQUE: Estira la imagen forzosamente hacia los bordes */
+                height: auto !important;         /* ↕️ Altura automática libre para mantener proporciones nítidas */
+                max-height: none !important;     /* Eliminamos topes de alto para que no se achique lateralmente */
+                object-fit: cover !important;    /* 🔍 RETOQUE: Expande la imagen tocando los bordes laterales */
                 border-radius: 0px;
                 display: none;
-                margin: 0;
+                margin: 0 auto;
             }
             .action-btn { 
                 width: 100vw !important; 
                 max-width: 100% !important;
                 border-radius: 0px !important;
-                margin-top: 0px !important;    /* Pegado al borde inferior de la imagen estirada */
+                margin-top: 20px !important;
             }
         }
 
@@ -204,7 +205,6 @@
         }
     }
 
-    // PROCESADOR DE RESPUESTA EN JAVASCRIPT NATIVO SEGURO
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const cardError = document.getElementById('cardNoValidado');
