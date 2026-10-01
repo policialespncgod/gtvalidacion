@@ -1,9 +1,6 @@
 {
   "policiacos": {
     "archivo": "omar.png",
-    "destino": "https://policiales.pnc.gob.gt/validacion",
-    "texto": "volver",
-    "estilo": "background-color: #e74c3c; color: white; border-radius: 0px; padding: 14px 24px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-block;"
+    "destino": "https://policiales.pnc.gob.gt/validacion"
   }
 }
-
