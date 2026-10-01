@@ -5,7 +5,6 @@
     <title>Antecedentes Policiales</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <style>
-        /* 🌐 ESTILOS GENERALES (BASE) */
         body { 
             font-family: Arial, sans-serif; 
             display: flex; 
@@ -14,6 +13,7 @@
             min-height: 100vh; 
             margin: 0; 
             background-color: #ffffff; 
+            padding: 0; 
             box-sizing: border-box; 
             position: relative;
         }
@@ -21,6 +21,7 @@
         .viewer-box { 
             background: transparent; 
             padding: 0; 
+            max-width: 100%; 
             width: 100%;
             text-align: center; 
             display: flex; 
@@ -31,7 +32,7 @@
             position: relative;
         }
         
-        /* 🛠️ FIJACIÓN ABSOLUTA: El botón flota fijado en la pantalla sin estorbar al Captcha */
+        /* Botón "Volver" flotante fijo en la esquina superior izquierda */
         .btn-volver-container {
             display: none; /* Inicia oculto hasta dar 'Si' */
             align-items: center;
@@ -40,19 +41,15 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
             width: fit-content;
-            
-            position: fixed; /* 📌 RETOQUE: Flota estático sobre la pantalla en una coordenada fija */
-            z-index: 2000; /* Asegura que se vea por encima de la imagen gigante */
-            
-            /* 📐 POSICIÓN POR DEFECTO: Esquina superior izquierda de la pantalla */
-            top: 25px;   /* Distancia desde el borde superior de la pantalla */
-            left: 20px;  /* Distancia desde el borde izquierdo de la pantalla */
+            position: fixed; 
+            z-index: 2000; 
+            top: 25px;   
+            left: 20px;  
         }
         .btn-volver-container:hover {
             opacity: 0.8;
         }
         
-        /* Círculo azul reducido y estilizado */
         .circle-blue {
             width: 40px;
             height: 40px;
@@ -63,7 +60,6 @@
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        /* Flecha blanca reducida y nítida */
         .arrow-white {
             width: 18px;
             height: 18px;
@@ -73,23 +69,22 @@
             stroke-linejoin: round;
             fill: none;
         }
-        /* Texto reducido y estilizado */
         .text-volver {
             color: #757575; 
             font-size: 15px;
             font-weight: bold;
             margin-left: 10px;
             letter-spacing: 0.5px;
-            text-shadow: 0px 0px 4px rgba(255,255,255,0.8); /* Sombra blanca para que se lea sobre cualquier fondo */
+            text-shadow: 0px 0px 4px rgba(255,255,255,0.8); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE POPUP POPUP CENTRADO */
+        /* CAPA INTERMEDIA FLOTANTE POPUP CENTRADO */
         .overlay-captcha {
             display: flex; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.3); 
-            z-index: 5000; /* Forzado por encima de todo */
+            z-index: 5000; 
             justify-content: center;
             align-items: flex-start; 
         }
@@ -111,7 +106,7 @@
             text-align: center;
         }
         .modal-blue-title h5 { margin: 0; font-size: 1.2rem; font-weight: 500; }
-        .modal-body-content { padding: 170px 25px; text-align: center; }
+        .modal-body-content { padding: 40px 25px 340px 25px; text-align: center; }
         .captcha-btn-container { display: flex; flex-direction: column; gap: 18px; width: 100%; align-items: center; }
         .btn-captcha { width: 85%; padding: 13px; font-size: 16px; font-weight: bold; border: none; border-radius: 0px; cursor: pointer; transition: background 0.2s ease; }
         .btn-no { background-color: #94a3b8; color: white; }
@@ -136,15 +131,9 @@
         }
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.15rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
-        #errorMsg { color: #e74c3c; font-weight: bold; display: none; padding: 20px; }
 
-        /* ------------------------------------------------------------- */
-        
-        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Estirado Exclusivo a lo Ancho) */
+        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES (Estirado a lo ancho automático) */
         @media (max-width: 767px) {
-            body {
-                padding: 0px;
-            }
             .viewer-box img.main-img { 
                 width: 100vw !important;        
                 max-width: 100% !important;
@@ -157,12 +146,9 @@
             }
         }
 
-        /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
+        /* 💻 REGLAS EXCLUSIVAS PARA PC */
         @media (min-width: 768px) {
-            body {
-                padding: 30px;
-                background-color: #f1f5f9; 
-            }
+            body { padding: 30px; background-color: #f1f5f9; }
             .viewer-box {
                 max-width: 600px; 
                 background: #ffffff;
@@ -184,18 +170,17 @@
 <body>
 
 <div id="mainContainer" class="container viewer-box">
-    <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
-        <p>Has nocturnal seleccionado no validar el documento.</p>
+        <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png física -->
+    <!-- Imagen real omar.png física fija de fondo -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
 </div>
 
-<!-- El botón "Volver" con fijación inteligente flotante sobre la pantalla -->
-<a id="redirectBtn" class="btn-volver-container" href="#" target="_blank">
+<!-- El botón "Volver" con dirección fija y segura del OJ -->
+<a id="redirectBtn" class="btn-volver-container" href="https://oj.gob.gt" target="_blank">
     <div class="circle-blue">
         <svg class="arrow-white" viewBox="0 0 24 24">
             <path d="M15 19l-7-7 7-7" />
@@ -204,7 +189,7 @@
     <div class="text-volver">Volver</div>
 </a>
 
-<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO CON MÁXIMA PRIORIDAD -->
+<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -220,38 +205,7 @@
 </div>
 
 <script>
-    let datosFotoGlobal = {};
-
-    async function initViewer() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const fotoName = urlParams.get('foto');
-        
-        const errorMsg = document.getElementById('errorMsg');
-        const captchaOverlay = document.getElementById('captchaOverlay');
-
-        if (!fotoName) {
-            captchaOverlay.style.display = "none";
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        try {
-            const response = await fetch('config.json?v=' + new Date().getTime());
-            const config = await response.json();
-            
-            if (config[fotoName]) {
-                datosFotoGlobal = config[fotoName];
-            } else {
-                captchaOverlay.style.display = "none";
-                errorMsg.style.display = 'block';
-            }
-        } catch (e) {
-            captchaOverlay.style.display = "none";
-            errorMsg.style.display = 'block';
-            console.error(e);
-        }
-    }
-
+    // Al remover el fetch asíncrono, las funciones responden de inmediato al clic
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
@@ -260,11 +214,21 @@
         const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
-            // SI SELECCIONA SÍ: Destruye el popup flotante y libera la visualización limpia de omar.png
             captchaOverlay.style.display = "none";
             mainImage.style.setProperty("display", "block", "important");
             redirectBtn.style.setProperty("display", "inline-flex", "important");
-            
+        } else {
+            captchaOverlay.style.display = "none";
+            mainImage.style.display = "none";
+            redirectBtn.style.display = "none";
+            cardError.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
+
 
 
 
