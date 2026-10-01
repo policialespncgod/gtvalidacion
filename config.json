@@ -1,0 +1,9 @@
+{
+  "policiacos": {
+    "archivo": "foto-oj3.jpg",
+    "filtro_botones": "si",
+    "destino": "https://youtube.com",
+    "texto": "🔍 Consultar Historial",
+    "fondo_pnc": "#073064"
+  }
+}
