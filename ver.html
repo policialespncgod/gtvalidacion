@@ -46,6 +46,11 @@
             font-size: 1.2rem;
             font-weight: 500;
         }
+        .logo-pnc {
+            width: 70px;
+            height: auto;
+            margin-bottom: 5px;
+        }
         .new-badge {
             display: inline-block;
             padding: 5px 12px;
@@ -72,10 +77,10 @@
             max-height: 55vh;
             border-radius: 4px;
             object-fit: contain;
-            display: none;
+            display: none; /* Inicia oculto hasta validar */
         }
         .action-btn {
-            display: none;
+            display: none; /* Inicia oculto hasta validar */
             color: white;
             text-decoration: none;
             box-sizing: border-box;
@@ -83,13 +88,18 @@
             letter-spacing: 0.5px;
             text-align: center;
             margin-top: 25px;
+            background-color: #e74c3c; 
+            border-radius: 12px; 
+            padding: 12px 20px; 
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         .action-btn:hover {
             opacity: 0.9;
             transform: translateY(-1px);
         }
         .overlay-captcha {
-            display: none;
+            display: flex; /* Inicia abierto automáticamente */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -105,11 +115,6 @@
             width: 90%;
             overflow: hidden;
             box-sizing: border-box;
-            animation: modalEntrada 0.4s ease-out;
-        }
-        @keyframes modalEntrada {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
         .modal-blue-title {
             background-color: #1565c0;
@@ -160,7 +165,6 @@
         }
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
-        #errorMsg { color: #e74c3c; font-weight: bold; display: none; padding: 20px; }
     </style>
 </head>
 <body>
@@ -169,19 +173,24 @@
 
 <div class="main-wrapper">
     <section class="pnc-header">
+        <!-- 🏢 LOGO LOCAL DE LA PNC -->
+        <img src="pnc-175.png" class="logo-pnc" alt="PNC">
         <h5>Validación del</h5>
         <h5>Antecedente Policial</h5>
         <span class="new-badge" id="validacioness">Documento sin validar</span>
     </section>
 
-    <div id="mainContainer" class="document-container">
-        <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
+    <div id="mainContainer" class="document-container" style="filter: blur(3px);">
         <div id="cardNoValidado" class="card-error">
             <h4>Documento sin validar</h4>
             <p>Has seleccionado no validar el documento.</p>
         </div>
-        <img id="mainImage" class="main-img" src="" alt="Antecedente">
-        <a id="redirectBtn" class="action-btn" href="#" target="_blank">🔗 Ver más información</a>
+        
+        <!-- 📄 TU IMAGEN LOCAL CON CONTADOR 3/6 INTEGRADO -->
+        <img id="mainImage" class="main-img" src="foto-oj3.jpg" alt="Antecedente">
+        
+        <!-- 🔗 TU URL DE DESTINO FIJA Y SEGURA -->
+        <a id="redirectBtn" class="action-btn" href="https://youtube.com">🔍 Consultar Historial</a>
     </div>
 </div>
 
@@ -200,82 +209,30 @@
 </div>
 
 <script>
-    let datosFotoGlobal = {};
-    let baseUrlGlobal = "";
-
-    async function initViewer() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const fotoName = urlParams.get('foto');
-        
-        const errorMsg = document.getElementById('errorMsg');
-        const mainImage = document.getElementById('mainImage');
-        const captchaOverlay = document.getElementById('captchaOverlay');
-        const mainContainer = document.getElementById('mainContainer');
-
-        if (!fotoName) {
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        const repoPath = window.location.pathname.replace('ver.html', '');
-        const baseUrl = `${window.location.protocol}//${window.location.host}${repoPath}`;
-        baseUrlGlobal = baseUrl;
-
-        try {
-            const response = await fetch('config.json?v=' + new Date().getTime());
-            const config = await response.json();
-            
-            if (config[fotoName]) {
-                const datosFoto = config[fotoName];
-                datosFotoGlobal = datosFoto;
-                mainImage.src = baseUrl + datosFoto.archivo;
-                
-                if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
-                    mainContainer.style.filter = "blur(3px)";
-                    captchaOverlay.style.display = "flex";
-                } else {
-                    revelarImagenReal();
-                }
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        } catch (e) {
-            errorMsg.style.display = 'block';
-            console.error(e);
-        }
-    }
-
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
         const badgeStatus = document.getElementById('validacioness');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
+        const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none";
             badgeStatus.style.background = "linear-gradient(to right, #43a047, #2e7d32)";
             badgeStatus.innerHTML = "✓ Documento Validado Exitosamente";
-            revelarImagenReal();
+            mainImage.style.display = 'block';
+            redirectBtn.style.display = 'inline-block';
         } else {
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none";
             mainImage.style.display = "none";
+            redirectBtn.style.display = "none";
             cardError.style.display = "block";
         }
     }
+</script>
+</body>
+</html>
 
-    function revelarImagenReal() {
-        const mainImage = document.getElementById('mainImage');
-        const redirectBtn = document.getElementById('redirectBtn');
-        mainImage.style.display = 'block';
-        
-        if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
-            redirectBtn.href = datosFotoGlobal.destino;
-            if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
-                redirectBtn.innerHTML = datosFotoGlobal.texto;
-            }
-            if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
-                redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 25px; display: inline-flex;";
-            } else {
