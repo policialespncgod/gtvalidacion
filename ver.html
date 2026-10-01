@@ -12,7 +12,7 @@
             align-items: flex-start; 
             min-height: 100vh; 
             margin: 0; 
-            background-color: #073064; 
+            background-color: #ffffff; /* 🎨 RETOQUE: Fondo blanco puro en lugar de azul marino */
             padding: 20px; 
             box-sizing: border-box; 
             position: relative;
@@ -20,23 +20,29 @@
         .viewer-box { 
             background: transparent; 
             padding: 0; 
-            max-width: 500px; 
+            max-width: 800px; /* 🔼 RETOQUE: Más amplio para dar soporte a imágenes grandes en PC */
             width: 100%;
             text-align: center; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             box-sizing: border-box;
-            margin-top: 40px; 
+            margin-top: 20px; 
             transition: filter 0.3s ease;
         }
+        
+        /* 📱 RETOQUE: Imagen gigante adaptativa a celular y PC */
         .viewer-box img.main-img { 
-            max-width: 100%; 
-            max-height: 60vh; 
+            width: 100%; /* Ocupa todo el ancho de la caja disponible */
+            max-width: 100%;
+            height: auto;
+            max-height: 80vh; /* Máximo alto permitido para que no se salga de la pantalla */
             border-radius: 8px; 
-            object-fit: contain; 
+            object-fit: contain; /* Mantiene la proporción original sin deformar */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             display: none;
         }
+        
         .action-btn { 
             display: none; 
             color: white; 
@@ -52,7 +58,7 @@
             transform: translateY(-1px); 
         }
         
-        /* 🛡️ CAPA INTERMEDIA FLOTANTE (VENTANA CENTRADA DE SÍ/NO) */
+        /* 🛡️ CAPA INTERMEDIA FLOTANTE MODAL */
         .overlay-captcha {
             display: none; 
             position: fixed;
@@ -62,49 +68,53 @@
             justify-content: center;
             align-items: center;
         }
+        
+        /* 🏢 RETOQUE: Caja del captcha blanca más grande y espaciosa */
         .captcha-box {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            max-width: 500px; /* 🔼 RETOQUE: Caja más ancha (antes era 400px) */
+            width: 92%;
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
         }
         .modal-blue-title {
-            background-color: #1565c0; /* light-blue darken-3 */
+            background-color: #1565c0; 
             color: white;
-            padding: 15px;
+            padding: 20px 15px; /* 🔼 RETOQUE: Barra superior azul más alta y espaciosa */
             text-align: center;
         }
         .modal-blue-title h5 {
             margin: 0;
-            font-size: 1.15rem;
+            font-size: 1.3rem; /* 🔼 RETOQUE: Letra un poco más grande y legible */
             font-weight: 500;
         }
+        
+        /* 🔼 RETOQUE: Cuerpo interno blanco del captcha mucho más amplio (padding alto) */
         .modal-body-content {
-            padding: 25px 20px;
+            padding: 40px 30px; /* Aumentamos el espacio en blanco de fondo */
             text-align: center;
         }
         .captcha-btn-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px; /* ↕️ Más separación entre los botones */
             width: 100%;
             align-items: center;
         }
         .btn-captcha {
-            width: 80%;
-            padding: 12px;
-            font-size: 16px;
+            width: 90%; /* Botones ligeramente más largos */
+            padding: 14px; /* Botones más altos y cómodos de pulsar */
+            font-size: 18px; /* Letra de los botones más grande */
             font-weight: bold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s ease;
         }
-        /* Botón NO arriba (Gris neutro) */
+        /* Botón NO arriba (Gris) */
         .btn-no {
             background-color: #94a3b8;
             color: white;
@@ -112,7 +122,7 @@
         .btn-no:hover {
             background-color: #64748b;
         }
-        /* Botón SÍ abajo (Azul llamativo) */
+        /* Botón SÍ abajo (Azul) */
         .btn-si {
             background-color: #2563eb;
             color: white;
@@ -126,15 +136,17 @@
             display: none;
             background: linear-gradient(to right, #23b9f5, #00599f);
             color: white;
-            padding: 15px;
-            border-radius: 4px;
+            padding: 20px;
+            border-radius: 6px;
             margin-top: 15px;
             text-align: left;
-            border-left: 5px solid #ff9800;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-left: 6px solid #ff9800;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 100%;
+            box-sizing: border-box;
         }
-        .card-error h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
-        .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
+        .card-error h4 { margin: 0 0 8px 0; font-size: 1.2rem; }
+        .card-error p { margin: 0; font-size: 1rem; opacity: 0.9; }
 
         #errorMsg { 
             color: #e74c3c; 
@@ -149,17 +161,18 @@
 <div id="mainContainer" class="container viewer-box">
     <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     
-    <!-- Tarjeta de error oculta inicial -->
+    <!-- Tarjeta de error controlada -->
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
+    <!-- Imagen real escalable de forma gigante -->
     <img id="mainImage" class="main-img" src="" alt="Antecedente">
     <a id="redirectBtn" class="action-btn" href="#" target="_blank">🔗 Ver más información</a>
 </div>
 
-<!-- CAPA INTERMEDIA FLOTANTE DE VALIDACIÓN -->
+<!-- CAPA INTERMEDIA FLOTANTE DE VALIDACIÓN AMPLIADA -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -204,11 +217,12 @@
                 const datosFoto = config[fotoName];
                 datosFotoGlobal = datosFoto;
                 
-                // Asignamos la ruta de tu antecedente real
+                // Mapeo dinámico al archivo omar.png del repositorio
                 mainImage.src = baseUrl + datosFoto.archivo;
                 
                 if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
-                    mainContainer.style.filter = "blur(4px) opacity(0.6)";
+                    // Desenfoca sutilmente el fondo para resaltar la nueva caja gigante
+                    mainContainer.style.filter = "blur(5px) opacity(0.5)";
                     captchaOverlay.style.display = "flex";
                 } else {
                     revelarImagenReal();
@@ -248,22 +262,13 @@
         
         if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
             redirectBtn.href = datosFotoGlobal.destino;
-            if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
+            if (datosFotoGlobal.texto && datosFotoGlobal.destino.trim() !== "") {
                 redirectBtn.innerHTML = datosFotoGlobal.texto;
             }
             if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
                 redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 35px; display: inline-flex;";
             } else {
-                redirectBtn.style.cssText = "background-color: #2563eb; border-radius: 50px; padding: 14px 20px; margin-top: 35px; display: inline-block; color: white; text-decoration: none;";
-            }
-        }
-    }
 
-    window.onload = initViewer;
-</script>
-
-</body>
-</html>
 
 
 
