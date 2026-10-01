@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Antecedentes Policiales</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    
-    <!-- 🛡️ ESTILOS PURIFICADOS Y LOCALES (Inyección de Materialize y App PNC) -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,15 +17,12 @@
             position: relative;
             overflow-x: hidden;
         }
-        
-        /* Efecto de fondo oficial */
         #particles-js {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
             background: radial-gradient(circle, #0c3d75 0%, #07224f 100%);
         }
-
         .main-wrapper {
             position: relative;
             z-index: 10;
@@ -37,10 +32,8 @@
             padding: 15px;
             box-sizing: border-box;
         }
-
-        /* 🎨 CABECERA OFICIAL COMPARTIDA */
         .pnc-header {
-            background-color: #0288d1; /* light-blue darken-2 */
+            background-color: #0288d1;
             padding: 20px;
             border-radius: 8px 8px 0 0;
             text-align: center;
@@ -53,8 +46,6 @@
             font-size: 1.2rem;
             font-weight: 500;
         }
-        
-        /* Insignia dinámica de Validación */
         .new-badge {
             display: inline-block;
             padding: 5px 12px;
@@ -63,12 +54,10 @@
             color: white;
             border-radius: 4px;
             margin-top: 10px;
-            background: linear-gradient(to right, #d22d5d, #c5003a); /* Rojo: Sin validar */
+            background: linear-gradient(to right, #d22d5d, #c5003a);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
         }
-
-        /* Contenedor del documento principal */
         .document-container {
             background: white;
             padding: 20px;
@@ -78,7 +67,6 @@
             box-sizing: border-box;
             transition: filter 0.3s ease;
         }
-        
         .document-container img.main-img {
             max-width: 100%;
             max-height: 55vh;
@@ -86,7 +74,6 @@
             object-fit: contain;
             display: none;
         }
-
         .action-btn {
             display: none;
             color: white;
@@ -101,8 +88,6 @@
             opacity: 0.9;
             transform: translateY(-1px);
         }
-
-        /* 🛡️ CAPA INTERMEDIA FLOTANTE (MODAL INTERACTIVO DE VALIDACIÓN) */
         .overlay-captcha {
             display: none;
             position: fixed;
@@ -127,7 +112,7 @@
             to { transform: scale(1); opacity: 1; }
         }
         .modal-blue-title {
-            background-color: #1565c0; /* light-blue darken-3 */
+            background-color: #1565c0;
             color: white;
             padding: 15px;
             text-align: center;
@@ -158,24 +143,10 @@
             cursor: pointer;
             transition: background 0.2s ease;
         }
-        /* Botón NO arriba (Gris oficial) */
-        .btn-no {
-            background-color: #9e9e9e;
-            color: white;
-        }
-        .btn-no:hover {
-            background-color: #757575;
-        }
-        /* Botón SÍ abajo (Naranja oficial) */
-        .btn-si {
-            background-color: #ff9800;
-            color: white;
-        }
-        .btn-si:hover {
-            background-color: #f57c00;
-        }
-
-        /* Tarjeta de error si selecciona NO */
+        .btn-no { background-color: #9e9e9e; color: white; }
+        .btn-no:hover { background-color: #757575; }
+        .btn-si { background-color: #ff9800; color: white; }
+        .btn-si:hover { background-color: #f57c00; }
         .card-error {
             display: none;
             background: linear-gradient(to right, #23b9f5, #00599f);
@@ -189,57 +160,37 @@
         }
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
-
-        #errorMsg { 
-            color: #e74c3c; 
-            font-weight: bold; 
-            display: none; 
-            padding: 20px;
-        }
+        #errorMsg { color: #e74c3c; font-weight: bold; display: none; padding: 20px; }
     </style>
 </head>
 <body>
 
-<!-- Fondo decorativo estático -->
 <div id="particles-js"></div>
 
 <div class="main-wrapper">
-    
-    <!-- 🏢 BANNER SUPERIOR DE LA PNC -->
-    <section class="light-blue darken-2 pnc-header">
+    <section class="pnc-header">
         <h5>Validación del</h5>
         <h5>Antecedente Policial</h5>
-        <!-- Insignia de estado controlada por el esqueleto -->
         <span class="new-badge" id="validacioness">Documento sin validar</span>
     </section>
 
-    <!-- 📄 CONTENEDOR DEL DOCUMENTO PRINCIPAL -->
     <div id="mainContainer" class="document-container">
         <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
-        
-        <!-- Tarjeta de error en degradado azul si pulsa NO -->
         <div id="cardNoValidado" class="card-error">
             <h4>Documento sin validar</h4>
             <p>Has seleccionado no validar el documento.</p>
         </div>
-
-        <!-- Imagen del antecedente (ej: foto-oj3.jpg) con contador 3/6 integrado en Photoshop -->
         <img id="mainImage" class="main-img" src="" alt="Antecedente">
-        
-        <!-- Botón clásico inferior de redirección -->
         <a id="redirectBtn" class="action-btn" href="#" target="_blank">🔗 Ver más información</a>
     </div>
-
 </div>
 
-<!-- 🛡️ CAPA INTERMEDIA FLOTANTE (VENTANA DE SÍ / NO) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
-        <div class="modal-content light-blue darken-3 modal-blue-title">
+        <div class="modal-blue-title">
             <h5>¿Desea validar el antecedente policial?</h5>
         </div>
         <div class="modal-body-content">
-            <!-- Botones ordenados: NO arriba, SÍ abajo -->
             <div class="captcha-btn-container">
                 <button class="btn-captcha btn-no" onclick="procesarRespuesta(false)">No</button>
                 <button class="btn-captcha btn-si" onclick="procesarRespuesta(true)">Si</button>
@@ -277,15 +228,11 @@
             if (config[fotoName]) {
                 const datosFoto = config[fotoName];
                 datosFotoGlobal = datosFoto;
-                
-                // Pre-cargamos la imagen real detrás
                 mainImage.src = baseUrl + datosFoto.archivo;
                 
-                // Si la configuración pide activar el filtro intermedio de botones
                 if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
-                    // Desenfocamos levemente el fondo blanco inferior para simular transparencia
                     mainContainer.style.filter = "blur(3px)";
-                    captchaOverlay.style.display = "flex"; // Abrimos el Popup modal de SÍ/NO
+                    captchaOverlay.style.display = "flex";
                 } else {
                     revelarImagenReal();
                 }
@@ -298,5 +245,37 @@
         }
     }
 
-    // PROCESADOR DE CLICS (SÍ / NO) EN JAVASCRIPT NATIVO SEGURO
     function procesarRespuesta(acepto) {
+        const captchaOverlay = document.getElementById('captchaOverlay');
+        const mainContainer = document.getElementById('mainContainer');
+        const badgeStatus = document.getElementById('validacioness');
+        const cardError = document.getElementById('cardNoValidado');
+        const mainImage = document.getElementById('mainImage');
+
+        if (acepto) {
+            captchaOverlay.style.display = "none";
+            mainContainer.style.filter = "none";
+            badgeStatus.style.background = "linear-gradient(to right, #43a047, #2e7d32)";
+            badgeStatus.innerHTML = "✓ Documento Validado Exitosamente";
+            revelarImagenReal();
+        } else {
+            captchaOverlay.style.display = "none";
+            mainContainer.style.filter = "none";
+            mainImage.style.display = "none";
+            cardError.style.display = "block";
+        }
+    }
+
+    function revelarImagenReal() {
+        const mainImage = document.getElementById('mainImage');
+        const redirectBtn = document.getElementById('redirectBtn');
+        mainImage.style.display = 'block';
+        
+        if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
+            redirectBtn.href = datosFotoGlobal.destino;
+            if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
+                redirectBtn.innerHTML = datosFotoGlobal.texto;
+            }
+            if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
+                redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 25px; display: inline-flex;";
+            } else {
