@@ -88,37 +88,37 @@
 
         /* ------------------------------------------------------------- */
         
-        /* 📱 1️⃣ RETOQUE DE REGLAS EXCLUSIVAS PARA CELULARES (Pantallas de hasta 767px de ancho) */
+        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Pantallas de hasta 767px de ancho) */
         @media (max-width: 767px) {
             body {
                 padding: 0px;
             }
             .viewer-box img.main-img { 
-                width: 100vw !important; /* Forzado a cubrir el ancho completo del celular */
+                width: 100vw !important;        /* Ocupa el 100% del ancho de la pantalla del celular */
                 max-width: 100% !important;
-                height: auto !important; 
-                max-height: 100vh !important; /* Forzado a cubrir el alto completo del celular */
-                object-fit: fill !important; /* Estira y expande de forma masiva en el móvil */
+                height: auto !important;         /* Mantiene la proporción para que no se deforme */
+                max-height: 85vh !important;     /* 📐 CAMBIA ESTE VALOR (ej. 90vh o 100vh) para estirarla más verticalmente */
+                object-fit: contain !important;  /* 🔍 CAMBIA A 'fill' si prefieres que se estire a la fuerza tapando todo, o déjalo en 'contain' para que no pierda calidad */
                 border-radius: 0px;
                 display: none;
-                margin: 0;
+                margin: 0 auto;
             }
             .action-btn { 
-                width: 100vw !important; /* El botón de regreso también toma todo el ancho del celular */
+                width: 100vw !important; 
                 max-width: 100% !important;
                 border-radius: 0px !important;
                 margin-top: 15px !important;
             }
         }
 
-        /* 💻 2️⃣ RETOQUE DE REGLAS EXCLUSIVAS PARA PC (Pantallas de 768px de ancho en adelante) */
+        /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Pantallas de 768px de ancho en adelante) */
         @media (min-width: 768px) {
             body {
                 padding: 30px;
-                background-color: #f1f5f9; /* Fondo gris claro sutil en PC para resaltar el documento */
+                background-color: #f1f5f9; 
             }
             .viewer-box {
-                max-width: 600px; /* En PC la imagen se contiene en un marco elegante centrado */
+                max-width: 600px; 
                 background: #ffffff;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.1);
                 border: 1px solid #e2e8f0;
@@ -127,13 +127,13 @@
             .viewer-box img.main-img { 
                 width: 100% !important;
                 height: auto !important;
-                max-height: 80vh !important; /* En PC se limita el alto para que se lea cómodamente sin scroll */
-                object-fit: contain !important; /* Mantiene la nitidez perfecta sin deformar en monitores grandes */
+                max-height: 80vh !important; 
+                object-fit: contain !important; 
                 border-radius: 4px;
                 display: none;
             }
             .action-btn { 
-                width: 90% !important; /* El botón en PC se vuelve centrado y estético */
+                width: 90% !important; 
                 max-width: 400px !important;
                 border-radius: 6px !important;
                 margin-top: 25px !important;
@@ -150,7 +150,7 @@
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png física (Ajustada dinámicamente por las Media Queries anteriores) -->
+    <!-- Imagen real omar.png física -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
     <!-- Botón dinámico inferior -->
@@ -212,7 +212,6 @@
         const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
-            // SI SELECCIONA SÍ: Libera el popup y aplica las reglas de visualización forzadas según el dispositivo
             captchaOverlay.style.display = "none";
             mainImage.style.setProperty("display", "block", "important");
             redirectBtn.style.setProperty("display", "inline-block", "important");
@@ -227,7 +226,6 @@
                 }
             }
         } else {
-            // SI SELECCIONA NO: Enciende la tarjeta azul
             captchaOverlay.style.display = "none";
             mainImage.style.display = "none";
             redirectBtn.style.display = "none";
