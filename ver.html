@@ -30,8 +30,66 @@
             margin-top: 0px; 
             transition: filter 0.3s ease;
         }
-
-        /* Capa del Popup flotante */
+        
+        /* Imagen adaptativa GIGANTE a pantalla completa */
+        .viewer-box img.main-img { 
+            width: 100vw; 
+            max-width: 100%;
+            height: auto; 
+            max-height: 100vh; 
+            border-radius: 0px; 
+            object-fit: fill; 
+            box-shadow: none;
+            display: none; 
+            margin: 0;
+        }
+        
+        /* CONTAINER PARA EL BOTÓN ESTILIZADO "VOLVER" */
+        .btn-volver-container {
+            display: none; /* Inicia oculto hasta dar 'Si' */
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            width: fit-content;
+        }
+        .btn-volver-container:hover {
+            opacity: 0.8;
+        }
+        /* El círculo azul flotante */
+        .circle-blue {
+            width: 56px;
+            height: 56px;
+            background-color: #2196f3; /* Azul oficial de Materialize CSS */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        /* La flecha blanca interna hecha con vectores limpios */
+        .arrow-white {
+            width: 24px;
+            height: 24px;
+            stroke: #ffffff;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        /* El texto "Volver" a la par del botón */
+        .text-volver {
+            color: #757575; /* Gris suave idéntico al de la muestra */
+            font-size: 18px;
+            font-weight: 500;
+            margin-left: 15px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 🛡️ CAPA INTERMEDIA FLOTANTE POPUP */
         .overlay-captcha {
             display: flex; 
             position: fixed;
@@ -59,13 +117,7 @@
             text-align: center;
         }
         .modal-blue-title h5 { margin: 0; font-size: 1.2rem; font-weight: 500; }
-        
-        /* 🔼 RETOQUE: Se duplica el espacio inferior a 340px para hacer la parte blanca gigante por debajo */
-        .modal-body-content { 
-            padding: 40px 25px 340px 25px; /* Arriba 40px (cerca de la barra azul), abajo 340px (fondo blanco colosal) */
-            text-align: center; 
-        }
-        
+        .modal-body-content { padding: 170px 25px; text-align: center; }
         .captcha-btn-container { display: flex; flex-direction: column; gap: 18px; width: 100%; align-items: center; }
         .btn-captcha { width: 85%; padding: 13px; font-size: 16px; font-weight: bold; border: none; border-radius: 0px; cursor: pointer; transition: background 0.2s ease; }
         .btn-no { background-color: #94a3b8; color: white; }
@@ -92,13 +144,9 @@
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
         #errorMsg { color: #e74c3c; font-weight: bold; display: none; padding: 20px; }
 
-        /* ------------------------------------------------------------- */
-        
-        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES (Estirado Exclusivo a lo Ancho) */
+        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES */
         @media (max-width: 767px) {
-            body {
-                padding: 0px;
-            }
+            body { padding: 0px; }
             .viewer-box img.main-img { 
                 width: 100vw !important;        
                 max-width: 100% !important;
@@ -109,20 +157,11 @@
                 display: none;
                 margin: 0 auto;
             }
-            .action-btn { 
-                width: 100vw !important; 
-                max-width: 100% !important;
-                border-radius: 0px !important;
-                margin-top: 20px !important;
-            }
         }
 
-        /* REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
+        /* 💻 REGLAS EXCLUSIVAS PARA PC */
         @media (min-width: 768px) {
-            body {
-                padding: 30px;
-                background-color: #f1f5f9; 
-            }
+            body { padding: 30px; background-color: #f1f5f9; }
             .viewer-box {
                 max-width: 600px; 
                 background: #ffffff;
@@ -137,12 +176,6 @@
                 object-fit: contain !important; 
                 border-radius: 4px;
                 display: none;
-            }
-            .action-btn { 
-                width: 90% !important; 
-                max-width: 400px !important;
-                border-radius: 6px !important;
-                margin-top: 25px !important;
             }
         }
     </style>
@@ -159,8 +192,15 @@
     <!-- Imagen real omar.png física -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
-    <!-- Botón dinámico inferior -->
-    <a id="redirectBtn" class="action-btn" href="#" target="_blank"></a>
+    <!-- 🛠️ EL NUEVO BOTÓN "VOLVER" CLONADO DIGITALMENTE -->
+    <a id="redirectBtn" class="btn-volver-container" href="#" target="_blank">
+        <div class="circle-blue">
+            <svg class="arrow-white" viewBox="0 0 24 24">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </div>
+        <div class="text-volver">Volver</div>
+    </a>
 </div>
 
 <!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
@@ -213,6 +253,7 @@
 
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
+        const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
         const redirectBtn = document.getElementById('redirectBtn');
@@ -220,16 +261,11 @@
         if (acepto) {
             captchaOverlay.style.display = "none";
             mainImage.style.setProperty("display", "block", "important");
-            redirectBtn.style.setProperty("display", "inline-block", "important");
+            redirectBtn.style.setProperty("display", "inline-flex", "important"); // Enciende el contenedor flotante
             
+            // Asigna la dirección URL externa fijada en tu config.json
             if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
                 redirectBtn.href = datosFotoGlobal.destino;
-                if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
-                    redirectBtn.innerHTML = datosFotoGlobal.texto;
-                }
-                if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
-                    redirectBtn.style.cssText += ";" + datosFotoGlobal.estilo;
-                }
             }
         } else {
             captchaOverlay.style.display = "none";
@@ -243,8 +279,6 @@
 </script>
 
 </body>
-</html>
-
 
 
 
