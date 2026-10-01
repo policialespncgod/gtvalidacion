@@ -13,7 +13,7 @@
             min-height: 100vh; 
             margin: 0; 
             background-color: #ffffff; 
-            padding: 0; /* 🎨 RETOQUE: Cero márgenes en los bordes para que la imagen toque las esquinas */
+            padding: 0; 
             box-sizing: border-box; 
             position: relative;
         }
@@ -32,19 +32,20 @@
             transition: filter 0.3s ease;
         }
         
-        /* 📱 RETOQUE GIGANTE: La imagen se expande a lo ancho y largo de toda la pantalla */
+        /* Imagen adaptativa GIGANTE a pantalla completa */
         .viewer-box img.main-img { 
-            width: 100vw; /* Toma el 100% del ancho real del dispositivo */
+            width: 100vw; 
             max-width: 100%;
             height: auto; 
-            max-height: 100vh; /* Incrementado al 100% del alto real de la pantalla */
+            max-height: 100vh; 
             border-radius: 0px; 
-            object-fit: fill; /* 🔼 RETOQUE: Estira la imagen para cubrir el espacio máximo de forma imponente */
+            object-fit: fill; 
             box-shadow: none;
             display: none; 
             margin: 0;
         }
         
+        /* Estilo base para el botón dinámico inferior */
         .action-btn { 
             display: none; 
             color: white; 
@@ -54,22 +55,19 @@
             letter-spacing: 0.5px;
             text-align: center;
             margin-top: 20px;
-            background-color: #e74c3c; 
             border-radius: 0px; 
-            padding: 14px 24px; 
-            font-weight: bold; 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 100vw; /* El botón de regreso también toma todo el ancho inferior */
+            width: 100vw; 
             max-width: 100%;
+            font-size: 16px;
         }
         .action-btn:hover { 
             opacity: 0.9;
             transform: translateY(-1px); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE ALINEADA ARRIBA */
+        /* CAPA INTERMEDIA FLOTANTE POPUP ALINEADA ARRIBA */
         .overlay-captcha {
-            display: flex; 
+            display: none; /* Se activa dinámicamente por JavaScript */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.3); 
@@ -78,7 +76,7 @@
             align-items: flex-start; 
         }
         
-        /* Caja flotante (Popup centrado) */
+        /* Caja flotante (Popup cuadrado) */
         .captcha-box {
             background: white;
             border-radius: 0px; 
@@ -162,24 +160,32 @@
         }
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.15rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
+        
+        #errorMsg { 
+            color: #e74c3c; 
+            font-weight: bold; 
+            display: none; 
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
 
 <div id="mainContainer" class="container viewer-box" style="filter: blur(4px); opacity: 0.4;">
+    <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png en tamaño masivo -->
-    <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
+    <!-- Contenedor de imagen dinámica -->
+    <img id="mainImage" class="main-img" src="" alt="Antecedente">
     
-    <!-- Botón de consulta inferior extendido -->
-    <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
+    <!-- Botón dinámico controlado por el JSON -->
+    <a id="redirectBtn" class="action-btn" href="#" target="_blank"></a>
 </div>
 
-<!-- CAPA INTERMEDIA DE VALIDACIÓN CUADRADA GIGANTE -->
+<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -195,6 +201,54 @@
 </div>
 
 <script>
+    let datosFotoGlobal = {};
+    let baseUrlGlobal = "";
+
+    async function initViewer() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fotoName = urlParams.get('foto');
+        
+        const errorMsg = document.getElementById('errorMsg');
+        const mainImage = document.getElementById('mainImage');
+        const captchaOverlay = document.getElementById('captchaOverlay');
+        const mainContainer = document.getElementById('mainContainer');
+
+        if (!fotoName) {
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        const repoPath = window.location.pathname.replace('ver.html', '');
+        const baseUrl = `${window.location.protocol}//${window.location.host}${repoPath}`;
+        baseUrlGlobal = baseUrl;
+
+        try {
+            // Leemos el archivo JSON dinámico forzando la actualización
+            const response = await fetch('config.json?v=' + new Date().getTime());
+            const config = await response.json();
+            
+            if (config[fotoName]) {
+                const datosFoto = config[fotoName];
+                datosFotoGlobal = datosFoto;
+                
+                // Asignamos la ruta de la imagen según la clave leída del JSON
+                mainImage.src = baseUrl + datosFoto.archivo;
+                
+                if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
+                    captchaOverlay.style.display = "flex";
+                } else {
+                    // Si en el JSON pones "filtro_botones": "no", pasa directo sin popup
+                    revelarImagenReal();
+                }
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        } catch (e) {
+            errorMsg.style.display = 'block';
+            console.error(e);
+        }
+    }
+
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
@@ -206,8 +260,7 @@
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none"; 
             mainContainer.style.opacity = "1";
-            mainImage.style.display = 'block';
-            redirectBtn.style.display = 'inline-block';
+            revelarImagenReal();
         } else {
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none";
@@ -217,10 +270,23 @@
             cardError.style.display = "block";
         }
     }
-</script>
 
-</body>
-</html>
+    function revelarImagenReal() {
+        const mainImage = document.getElementById('mainImage');
+        const redirectBtn = document.getElementById('redirectBtn');
+        
+        mainImage.style.display = 'block';
+        
+        // El script inyecta de forma segura los datos independientes del JSON al botón
+        if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
+            redirectBtn.href = datosFotoGlobal.destino;
+            if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
+                redirectBtn.innerHTML = datosFotoGlobal.texto;
+            }
+            if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
+                redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 20px; display: inline-block;";
+            } else {
+
 
 
 
