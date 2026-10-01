@@ -46,16 +46,20 @@
         
         /* CONTAINER PARA EL BOTÓN ESTILIZADO "VOLVER" */
         .btn-volver-container {
-            display: none; /* Inicia oculto hasta dar 'Si' */
-            align-items: center;
-            justify-content: center;
-            margin-top: 25px;
-            margin-bottom: 25px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-            width: fit-content;
-        }
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    width: fit-content;
+
+    /* 📌 AÑADE ESTAS LÍNEAS PARA EL MODO FLOTANTE */
+    position: absolute;
+    top: 50px;  /* Esto lo empuja desde arriba hacia abajo */
+    left: 50px; /* Esto lo empuja desde la izquierda hacia la derecha */
+    z-index: 50; /* Lo mantiene al frente de la imagen */
+}
         .btn-volver-container:hover {
             opacity: 0.8;
         }
