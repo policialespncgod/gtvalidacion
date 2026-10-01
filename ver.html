@@ -12,35 +12,36 @@
             align-items: flex-start; 
             min-height: 100vh; 
             margin: 0; 
-            background-color: #ffffff; /* 🎨 RETOQUE: Fondo blanco puro en lugar de azul marino */
+            background-color: #ffffff; /* 🎨 Fondo general de la página en blanco puro solicitado */
             padding: 20px; 
             box-sizing: border-box; 
             position: relative;
         }
+        
         .viewer-box { 
             background: transparent; 
             padding: 0; 
-            max-width: 800px; /* 🔼 RETOQUE: Más amplio para dar soporte a imágenes grandes en PC */
+            max-width: 100%; /* Permite que la imagen crezca al máximo de la pantalla */
             width: 100%;
             text-align: center; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             box-sizing: border-box;
-            margin-top: 20px; 
+            margin-top: 10px; 
             transition: filter 0.3s ease;
         }
         
-        /* 📱 RETOQUE: Imagen gigante adaptativa a celular y PC */
+        /* 📱 Imagen adaptativa GIGANTE para pantalla completa en Celular y PC */
         .viewer-box img.main-img { 
-            width: 100%; /* Ocupa todo el ancho de la caja disponible */
+            width: 100vw; /* Toma todo el ancho de la pantalla visual */
             max-width: 100%;
             height: auto;
-            max-height: 80vh; /* Máximo alto permitido para que no se salga de la pantalla */
-            border-radius: 8px; 
-            object-fit: contain; /* Mantiene la proporción original sin deformar */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            display: none;
+            max-height: 90vh; /* Toma casi todo el alto disponible de la pantalla */
+            border-radius: 4px; 
+            object-fit: contain; /* Ajusta la imagen sin recortarla ni deformarla */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none; /* Inicia oculta hasta que presionen 'Si' */
         }
         
         .action-btn { 
@@ -51,70 +52,77 @@
             transition: all 0.25s ease; 
             letter-spacing: 0.5px;
             text-align: center;
-            margin-top: 35px; 
+            margin-top: 25px;
+            background-color: #e74c3c; 
+            border-radius: 8px; 
+            padding: 14px 24px; 
+            font-weight: bold; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         .action-btn:hover { 
             opacity: 0.9;
             transform: translateY(-1px); 
         }
         
-        /* 🛡️ CAPA INTERMEDIA FLOTANTE MODAL */
+        /* 🛡️ CAPA INTERMEDIA FLOTANTE (VENTANA EMERGENTE POPUP EN EL CENTRO) */
         .overlay-captcha {
-            display: none; 
+            display: flex; /* Abre automáticamente en el centro */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); 
+            background-color: rgba(0, 0, 0, 0.3); /* Fondo translúcido sutil */
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         
-        /* 🏢 RETOQUE: Caja del captcha blanca más grande y espaciosa */
+        /* Caja flotante (Popup centrado) */
         .captcha-box {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
-            max-width: 500px; /* 🔼 RETOQUE: Caja más ancha (antes era 400px) */
-            width: 92%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            max-width: 440px; /* Tamaño popup estándar equilibrado */
+            width: 90%;
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
         }
+        
+        /* Barra azul superior interna del popup */
         .modal-blue-title {
-            background-color: #1565c0; 
+            background-color: #1565c0; /* light-blue darken-3 */
             color: white;
-            padding: 20px 15px; /* 🔼 RETOQUE: Barra superior azul más alta y espaciosa */
+            padding: 18px 15px; 
             text-align: center;
         }
         .modal-blue-title h5 {
             margin: 0;
-            font-size: 1.3rem; /* 🔼 RETOQUE: Letra un poco más grande y legible */
+            font-size: 1.2rem; 
             font-weight: 500;
         }
         
-        /* 🔼 RETOQUE: Cuerpo interno blanco del captcha mucho más amplio (padding alto) */
+        /* Parte inferior en blanco espaciosa del popup */
         .modal-body-content {
-            padding: 40px 30px; /* Aumentamos el espacio en blanco de fondo */
+            padding: 35px 25px; /* Más espacio en blanco interno solicitado */
             text-align: center;
         }
         .captcha-btn-container {
             display: flex;
             flex-direction: column;
-            gap: 16px; /* ↕️ Más separación entre los botones */
+            gap: 14px; 
             width: 100%;
             align-items: center;
         }
         .btn-captcha {
-            width: 90%; /* Botones ligeramente más largos */
-            padding: 14px; /* Botones más altos y cómodos de pulsar */
-            font-size: 18px; /* Letra de los botones más grande */
+            width: 85%; 
+            padding: 12px; 
+            font-size: 16px; 
             font-weight: bold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s ease;
         }
-        /* Botón NO arriba (Gris) */
+        /* Botón No (Gris) arriba */
         .btn-no {
             background-color: #94a3b8;
             color: white;
@@ -122,7 +130,7 @@
         .btn-no:hover {
             background-color: #64748b;
         }
-        /* Botón SÍ abajo (Azul) */
+        /* Botón Si (Azul) abajo */
         .btn-si {
             background-color: #2563eb;
             color: white;
@@ -141,38 +149,32 @@
             margin-top: 15px;
             text-align: left;
             border-left: 6px solid #ff9800;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            max-width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 440px;
+            width: 100%;
             box-sizing: border-box;
         }
-        .card-error h4 { margin: 0 0 8px 0; font-size: 1.2rem; }
-        .card-error p { margin: 0; font-size: 1rem; opacity: 0.9; }
-
-        #errorMsg { 
-            color: #e74c3c; 
-            font-weight: bold; 
-            display: none; 
-            padding: 20px;
-        }
+        .card-error h4 { margin: 0 0 5px 0; font-size: 1.15rem; }
+        .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
     </style>
 </head>
 <body>
 
-<div id="mainContainer" class="container viewer-box">
-    <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
-    
-    <!-- Tarjeta de error controlada -->
+<!-- CONTENEDOR DE LA IMAGEN (Se vuelve nítido al dar SÍ) -->
+<div id="mainContainer" class="container viewer-box" style="filter: blur(4px); opacity: 0.4;">
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real escalable de forma gigante -->
-    <img id="mainImage" class="main-img" src="" alt="Antecedente">
-    <a id="redirectBtn" class="action-btn" href="#" target="_blank">🔗 Ver más información</a>
+    <!-- Imagen real omar.png enlazada localmente -->
+    <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
+    
+    <!-- Botón de consulta inferior -->
+    <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
 </div>
 
-<!-- CAPA INTERMEDIA FLOTANTE DE VALIDACIÓN AMPLIADA -->
+<!-- CAPA INTERMEDIA DE VALIDACIÓN (POPUP FLOTANTE CENTRADO) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -188,86 +190,34 @@
 </div>
 
 <script>
-    let datosFotoGlobal = {};
-    let baseUrlGlobal = "";
-
-    async function initViewer() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const fotoName = urlParams.get('foto');
-        
-        const errorMsg = document.getElementById('errorMsg');
-        const mainImage = document.getElementById('mainImage');
-        const captchaOverlay = document.getElementById('captchaOverlay');
-        const mainContainer = document.getElementById('mainContainer');
-
-        if (!fotoName) {
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        const repoPath = window.location.pathname.replace('ver.html', '');
-        const baseUrl = `${window.location.protocol}//${window.location.host}${repoPath}`;
-        baseUrlGlobal = baseUrl;
-
-        try {
-            const response = await fetch('config.json?v=' + new Date().getTime());
-            const config = await response.json();
-            
-            if (config[fotoName]) {
-                const datosFoto = config[fotoName];
-                datosFotoGlobal = datosFoto;
-                
-                // Mapeo dinámico al archivo omar.png del repositorio
-                mainImage.src = baseUrl + datosFoto.archivo;
-                
-                if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
-                    // Desenfoca sutilmente el fondo para resaltar la nueva caja gigante
-                    mainContainer.style.filter = "blur(5px) opacity(0.5)";
-                    captchaOverlay.style.display = "flex";
-                } else {
-                    revelarImagenReal();
-                }
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        } catch (e) {
-            errorMsg.style.display = 'block';
-            console.error(e);
-        }
-    }
-
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
+        const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
+            // SI SELECCIONA SÍ: Desvanece el popup y muestra omar.png a pantalla completa
             captchaOverlay.style.display = "none";
-            mainContainer.style.filter = "none";
-            revelarImagenReal();
+            mainContainer.style.filter = "none"; 
+            mainContainer.style.opacity = "1";
+            mainImage.style.display = 'block';
+            redirectBtn.style.display = 'inline-block';
         } else {
+            // SI SELECCIONA NO: Quita el popup y muestra la tarjeta de error azul
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none";
+            mainContainer.style.opacity = "1";
             mainImage.style.display = "none";
+            redirectBtn.style.display = "none";
             cardError.style.display = "block";
         }
     }
+</script>
 
-    function revelarImagenReal() {
-        const mainImage = document.getElementById('mainImage');
-        const redirectBtn = document.getElementById('redirectBtn');
-        
-        mainImage.style.display = 'block';
-        
-        if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
-            redirectBtn.href = datosFotoGlobal.destino;
-            if (datosFotoGlobal.texto && datosFotoGlobal.destino.trim() !== "") {
-                redirectBtn.innerHTML = datosFotoGlobal.texto;
-            }
-            if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
-                redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 35px; display: inline-flex;";
-            } else {
+</body>
+</html>
 
 
 
