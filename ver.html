@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -88,30 +88,29 @@
 
         /* ------------------------------------------------------------- */
         
-        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Pantallas de hasta 767px de ancho) */
+        /* 📱 1️⃣ REGLAS EXCLUSIVAS PARA CELULARES (Estirado Total de Imagen) */
         @media (max-width: 767px) {
             body {
                 padding: 0px;
             }
             .viewer-box img.main-img { 
-                width: 100vw !important;        /* Ocupa el 100% del ancho de la pantalla del celular */
+                width: 100vw !important;        /* Ocupa el 100% del ancho real del celular */
                 max-width: 100% !important;
-                height: auto !important;         /* Mantiene la proporción para que no se deforme */
-                max-height: 85vh !important;     /* 📐 CAMBIA ESTE VALOR (ej. 90vh o 100vh) para estirarla más verticalmente */
-                object-fit: contain !important;  /* 🔍 CAMBIA A 'fill' si prefieres que se estire a la fuerza tapando todo, o déjalo en 'contain' para que no pierda calidad */
+                height: 100vh !important;       /* 🔥 Ocupa el 100% del alto real de la pantalla del celular */
+                object-fit: fill !important;    /* 🔼 RETOQUE: Estira la imagen forzosamente hacia los bordes */
                 border-radius: 0px;
                 display: none;
-                margin: 0 auto;
+                margin: 0;
             }
             .action-btn { 
                 width: 100vw !important; 
                 max-width: 100% !important;
                 border-radius: 0px !important;
-                margin-top: 15px !important;
+                margin-top: 0px !important;    /* Pegado al borde inferior de la imagen estirada */
             }
         }
 
-        /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Pantallas de 768px de ancho en adelante) */
+        /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
         @media (min-width: 768px) {
             body {
                 padding: 30px;
@@ -205,6 +204,7 @@
         }
     }
 
+    // PROCESADOR DE RESPUESTA EN JAVASCRIPT NATIVO SEGURO
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const cardError = document.getElementById('cardNoValidado');
