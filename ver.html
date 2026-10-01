@@ -13,7 +13,7 @@
             min-height: 100vh; 
             margin: 0; 
             background-color: #ffffff; 
-            padding: 20px; 
+            padding: 10px; /* Reducido un poco para dar más espacio en celulares */
             box-sizing: border-box; 
             position: relative;
         }
@@ -32,16 +32,17 @@
             transition: filter 0.3s ease;
         }
         
-        /* Imagen adaptativa GIGANTE para pantalla completa en Celular y PC */
+        /* 📱 RETOQUE: Imagen perfectamente encajada y gigante en la pantalla del celular */
         .viewer-box img.main-img { 
-            width: 100vw; 
+            width: 100%; /* Ocupa el ancho disponible del celular sin salirse */
             max-width: 100%;
-            height: auto;
-            max-height: 90vh; 
-            border-radius: 0px; /* 🟦 RETOQUE: Esquinas totalmente rectas para la foto */
-            object-fit: contain; 
+            height: auto; /* Altura automática para no deformar */
+            max-height: 75vh; /* Se ajusta al alto de la pantalla del celular de forma exacta */
+            border-radius: 0px; 
+            object-fit: contain; /* Encaja todo el documento dentro del marco visible */
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             display: none; 
+            margin: 0 auto;
         }
         
         .action-btn { 
@@ -54,10 +55,12 @@
             text-align: center;
             margin-top: 25px;
             background-color: #e74c3c; 
-            border-radius: 0px; /* 🟦 RETOQUE: Esquinas totalmente rectas */
+            border-radius: 0px; 
             padding: 14px 24px; 
             font-weight: bold; 
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 90%; /* Botón más cómodo para pulsar en celulares */
+            max-width: 440px;
         }
         .action-btn:hover { 
             opacity: 0.9;
@@ -75,10 +78,10 @@
             align-items: flex-start; 
         }
         
-        /* 🟦 RETOQUE: Caja flotante Popup CUADRADA sin esquinas redondeadas (border-radius: 0px) */
+        /* Caja flotante (Popup centrado) */
         .captcha-box {
             background: white;
-            border-radius: 0px; /* Pasamos de 8px a 0px para que sea cuadrada */
+            border-radius: 0px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
             max-width: 440px; 
             width: 90%;
@@ -114,14 +117,14 @@
             align-items: center;
         }
         
-        /* 🟦 RETOQUE: Botones del captcha CUADRADOS sin esquinas redondeadas (border-radius: 0px) */
+        /* Botones del captcha CUADRADOS */
         .btn-captcha {
             width: 85%; 
             padding: 13px; 
             font-size: 16px; 
             font-weight: bold;
             border: none;
-            border-radius: 0px; /* Pasamos de 6px a 0px para esquinas rectas en botones */
+            border-radius: 0px; 
             cursor: pointer;
             transition: background 0.2s ease;
         }
@@ -148,7 +151,7 @@
             background: linear-gradient(to right, #23b9f5, #00599f);
             color: white;
             padding: 20px;
-            border-radius: 0px; /* 🟦 RETOQUE: Cuadrado */
+            border-radius: 0px; 
             margin-top: 15px;
             text-align: left;
             border-left: 6px solid #ff9800;
@@ -169,14 +172,14 @@
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png enlazada localmente -->
+    <!-- Imagen real omar.png adaptada perfectamente -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
     <!-- Botón de consulta inferior -->
     <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
 </div>
 
-<!-- CAPA INTERMEDIA DE VALIDACIÓN (RETOQUE: POPUP CUADRADO ULTRA GIGANTE) -->
+<!-- CAPA INTERMEDIA DE VALIDACIÓN CUADRADA GIGANTE -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
