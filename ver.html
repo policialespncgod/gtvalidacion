@@ -59,7 +59,13 @@
             text-align: center;
         }
         .modal-blue-title h5 { margin: 0; font-size: 1.2rem; font-weight: 500; }
-        .modal-body-content { padding: 170px 25px; text-align: center; }
+        
+        /* 🔼 RETOQUE: Se reduce el espacio superior a 40px para subir los botones y se mantiene abajo */
+        .modal-body-content { 
+            padding: 40px 25px 170px 25px; /* Arriba 40px (espacio a barra azul), abajo 170px (fondo grande) */
+            text-align: center; 
+        }
+        
         .captcha-btn-container { display: flex; flex-direction: column; gap: 18px; width: 100%; align-items: center; }
         .btn-captcha { width: 85%; padding: 13px; font-size: 16px; font-weight: bold; border: none; border-radius: 0px; cursor: pointer; transition: background 0.2s ease; }
         .btn-no { background-color: #94a3b8; color: white; }
@@ -94,11 +100,11 @@
                 padding: 0px;
             }
             .viewer-box img.main-img { 
-                width: 100vw !important;        /* ↔️ RETOQUE: Forzado al 100% del ancho real de la pantalla del celular */
+                width: 100vw !important;        
                 max-width: 100% !important;
-                height: auto !important;         /* ↕️ Altura automática libre para mantener proporciones nítidas */
-                max-height: none !important;     /* Eliminamos topes de alto para que no se achique lateralmente */
-                object-fit: cover !important;    /* 🔍 RETOQUE: Expande la imagen tocando los bordes laterales */
+                height: auto !important;         
+                max-height: none !important;     
+                object-fit: cover !important;    
                 border-radius: 0px;
                 display: none;
                 margin: 0 auto;
@@ -111,7 +117,7 @@
             }
         }
 
-        /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
+        /* 2️⃣ REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
         @media (min-width: 768px) {
             body {
                 padding: 30px;
@@ -238,6 +244,7 @@
 
 </body>
 </html>
+
 
 
 
