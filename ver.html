@@ -18,21 +18,34 @@
             position: relative;
         }
         
+        /* 📦 ENVOLTURA CLAVE: Amarra el botón a la foto para que no se desplace en diferentes pantallas */
         .viewer-box { 
             background: transparent; 
             padding: 0; 
             max-width: 100%; 
             width: 100%;
             text-align: center; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            box-sizing: border-box;
-            margin-top: 0px; 
+            display: inline-block; /* Ajusta el contenedor al tamaño exacto del contenido visible */
             position: relative;
+            margin: 0 auto;
         }
         
-        /* Botón "Volver" flotante fijo en la esquina superior izquierda */
+        /* Imagen adaptativa GIGANTE a pantalla completa */
+        .viewer-box img.main-img { 
+            width: 100vw; 
+            max-width: 100%;
+            height: auto; 
+            max-height: 100vh; 
+            border-radius: 0px; 
+            object-fit: fill; 
+            box-shadow: none;
+            display: none; 
+            margin: 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* 🛠️ FIJACIÓN ABSOLUTA RELATIVA: El botón ahora se clava milimétricamente en la esquina de la foto */
         .btn-volver-container {
             display: none; /* Inicia oculto hasta dar 'Si' */
             align-items: center;
@@ -41,15 +54,19 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
             width: fit-content;
-            position: fixed; 
-            z-index: 2000; 
-            top: 25px;   
+            
+            position: absolute; /* 📌 Se posiciona en base a la caja de la foto, no de la pantalla general */
+            z-index: 100; /* Forzado por encima del lienzo de omar.png */
+            
+            /* 📐 COORDENADAS RECTAS: Clavado en la esquina superior izquierda de la foto de Omar */
+            top: 20px;   
             left: 20px;  
         }
         .btn-volver-container:hover {
             opacity: 0.8;
         }
         
+        /* Círculo azul reducido y estilizado */
         .circle-blue {
             width: 40px;
             height: 40px;
@@ -60,6 +77,7 @@
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
+        /* Flecha blanca nítida */
         .arrow-white {
             width: 18px;
             height: 18px;
@@ -69,13 +87,14 @@
             stroke-linejoin: round;
             fill: none;
         }
+        /* Texto nítido con sombra de lectura */
         .text-volver {
             color: #757575; 
             font-size: 15px;
             font-weight: bold;
             margin-left: 10px;
             letter-spacing: 0.5px;
-            text-shadow: 0px 0px 4px rgba(255,255,255,0.8); 
+            text-shadow: 0px 0px 4px rgba(255,255,255,0.9); 
         }
         
         /* CAPA INTERMEDIA FLOTANTE POPUP CENTRADO */
@@ -132,7 +151,7 @@
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.15rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
 
-        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES (Estirado a lo ancho automático) */
+        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES (Estirado horizontal automático) */
         @media (max-width: 767px) {
             .viewer-box img.main-img { 
                 width: 100vw !important;        
@@ -154,14 +173,14 @@
                 background: #ffffff;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.1);
                 border: 1px solid #e2e8f0;
-                padding: 20px;
+                padding: 0px;
             }
             .viewer-box img.main-img { 
                 width: 100% !important;
                 height: auto !important;
                 max-height: 80vh !important; 
                 object-fit: contain !important; 
-                border-radius: 4px;
+                border-radius: 0px;
                 display: none;
             }
         }
@@ -175,19 +194,19 @@
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png física fija de fondo -->
+    <!-- Imagen real omar.png física de fondo -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
+    
+    <!-- 🛠️ CORRECCIÓN: Eliminamos 'target="_blank"' para evitar bloqueos de Tor y forzar la redirección instantánea -->
+    <a id="redirectBtn" class="btn-volver-container" href="https://oj.gob.gt">
+        <div class="circle-blue">
+            <svg class="arrow-white" viewBox="0 0 24 24">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </div>
+        <div class="text-volver">Volver</div>
+    </a>
 </div>
-
-<!-- El botón "Volver" con dirección fija y segura del OJ -->
-<a id="redirectBtn" class="btn-volver-container" href="https://oj.gob.gt" target="_blank">
-    <div class="circle-blue">
-        <svg class="arrow-white" viewBox="0 0 24 24">
-            <path d="M15 19l-7-7 7-7" />
-        </svg>
-    </div>
-    <div class="text-volver">Volver</div>
-</a>
 
 <!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
 <div id="captchaOverlay" class="overlay-captcha">
@@ -205,7 +224,6 @@
 </div>
 
 <script>
-    // Al remover el fetch asíncrono, las funciones responden de inmediato al clic
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
@@ -228,6 +246,7 @@
 
 </body>
 </html>
+
 
 
 
