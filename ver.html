@@ -44,9 +44,9 @@
             z-index: 10;
         }
         
-        /* Mantiene la posición exacta intacta */
+        /* El diseño del botón queda fijo en el HTML en la coordenada exacta que te gusta */
         .btn-volver-container {
-            display: none; 
+            display: none; /* Inicia oculto, JavaScript lo enciende al dar 'Si' */
             align-items: center;
             justify-content: center;
             text-decoration: none;
@@ -62,7 +62,6 @@
             opacity: 0.8;
         }
         
-        /* Círculo azul */
         .circle-blue {
             width: 40px;
             height: 40px;
@@ -73,7 +72,6 @@
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        /* Flecha blanca nítida */
         .arrow-white {
             width: 18px;
             height: 18px;
@@ -83,7 +81,6 @@
             stroke-linejoin: round;
             fill: none;
         }
-        /* Texto Volver */
         .text-volver {
             color: #757575; 
             font-size: 15px;
@@ -93,7 +90,7 @@
             text-shadow: 0px 0px 4px rgba(255,255,255,0.9); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE POPUP INTACTA */
+        /* CAPA INTERMEDIA FLOTANTE POPUP CUADRADO INTACTO */
         .overlay-captcha {
             display: flex; 
             position: fixed;
@@ -192,9 +189,9 @@
     </div>
 
     <!-- Imagen real omar.png física de fondo -->
-    <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
+    <img id="mainImage" class="main-img" src="" alt="Antecedente">
     
-    <!-- El botón "Volver" con acción controlada por JavaScript -->
+    <!-- El botón "Volver" con acción controlada por el clic de JavaScript -->
     <div id="redirectBtn" class="btn-volver-container" onclick="ejecutarRedireccion()">
         <div class="circle-blue">
             <svg class="arrow-white" viewBox="0 0 24 24">
@@ -228,6 +225,7 @@
         const fotoName = urlParams.get('foto');
         
         const errorMsg = document.getElementById('errorMsg');
+        const mainImage = document.getElementById('mainImage');
         const captchaOverlay = document.getElementById('captchaOverlay');
 
         if (!fotoName) {
@@ -237,15 +235,18 @@
         }
 
         try {
+            // Leemos el archivo JSON forzando actualización limpia de red
             const response = await fetch('config.json?v=' + new Date().getTime());
             const config = await response.json();
             
             if (config[fotoName]) {
                 const datosFoto = config[fotoName];
-                // Almacenamos de forma segura la URL del JSON para la redirección
+                
+                // 🔥 CORRECCIÓN: Ruta relativa directa impecable que evita duplicaciones de carpetas
+                mainImage.src = datosFoto.archivo;
                 urlDestinoGlobal = datosFoto.destino;
                 
-                // Si el JSON incluye un texto de botón personalizado, lo inyectamos limpiamente
+                // Lee de forma dinámica el nombre del botón si lo cambias en el JSON
                 if (datosFoto.texto && datosFoto.texto.trim() !== "") {
                     document.getElementById('textoVolverElemento').innerHTML = datosFoto.texto;
                 }
@@ -262,7 +263,6 @@
 
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
-        const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
         const redirectBtn = document.getElementById('redirectBtn');
@@ -274,19 +274,6 @@
         } else {
             captchaOverlay.style.display = "none";
             mainImage.style.display = "none";
-            redirectBtn.style.display = "none";
-            cardError.style.display = "block";
-        }
-    }
-
-    // ACCIÓN DE REDIRECCIÓN DINÁMICA FLUIDA POR JSON
-
-
-
-
-
-
-
 
 
 
