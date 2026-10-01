@@ -38,7 +38,7 @@
             max-width: 100%;
             height: auto;
             max-height: 90vh; 
-            border-radius: 4px; 
+            border-radius: 0px; /* 🟦 RETOQUE: Esquinas totalmente rectas para la foto */
             object-fit: contain; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             display: none; 
@@ -54,7 +54,7 @@
             text-align: center;
             margin-top: 25px;
             background-color: #e74c3c; 
-            border-radius: 8px; 
+            border-radius: 0px; /* 🟦 RETOQUE: Esquinas totalmente rectas */
             padding: 14px 24px; 
             font-weight: bold; 
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -75,35 +75,35 @@
             align-items: flex-start; 
         }
         
-        /* Caja flotante (Popup centrado) */
+        /* 🟦 RETOQUE: Caja flotante Popup CUADRADA sin esquinas redondeadas (border-radius: 0px) */
         .captcha-box {
             background: white;
-            border-radius: 8px;
+            border-radius: 0px; /* Pasamos de 8px a 0px para que sea cuadrada */
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
             max-width: 440px; 
             width: 90%;
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
-            margin-top: 8vh; /* Se sube un poco más para dar espacio al tamaño masivo */
+            margin-top: 8vh; 
         }
         
-        /* 🔵 RETOQUE: Barra azul superior el DOBLE de alta verticalmente (padding a 36px) */
+        /* Barra azul superior interna del popup */
         .modal-blue-title {
             background-color: #1565c0; 
             color: white;
-            padding: 36px 15px; /* Pasamos de 18px a 36px arriba y abajo */
+            padding: 36px 15px; 
             text-align: center;
         }
         .modal-blue-title h5 {
             margin: 0;
-            font-size: 1.25rem; 
+            font-size: 1.2rem; 
             font-weight: 500;
         }
         
-        /* ⚪ RETOQUE: Parte inferior blanca masiva ampliada verticalmente (padding a 170px) */
+        /* Parte inferior blanca masiva ampliada verticalmente */
         .modal-body-content {
-            padding: 170px 25px; /* Pasamos de 110px a 170px arriba y abajo para un fondo gigante */
+            padding: 170px 25px; 
             text-align: center;
         }
         .captcha-btn-container {
@@ -113,13 +113,15 @@
             width: 100%;
             align-items: center;
         }
+        
+        /* 🟦 RETOQUE: Botones del captcha CUADRADOS sin esquinas redondeadas (border-radius: 0px) */
         .btn-captcha {
             width: 85%; 
             padding: 13px; 
             font-size: 16px; 
             font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 0px; /* Pasamos de 6px a 0px para esquinas rectas en botones */
             cursor: pointer;
             transition: background 0.2s ease;
         }
@@ -146,7 +148,7 @@
             background: linear-gradient(to right, #23b9f5, #00599f);
             color: white;
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 0px; /* 🟦 RETOQUE: Cuadrado */
             margin-top: 15px;
             text-align: left;
             border-left: 6px solid #ff9800;
@@ -174,7 +176,7 @@
     <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
 </div>
 
-<!-- CAPA INTERMEDIA DE VALIDACIÓN (RETOQUE: POPUP ULTRA GIGANTE) -->
+<!-- CAPA INTERMEDIA DE VALIDACIÓN (RETOQUE: POPUP CUADRADO ULTRA GIGANTE) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -216,6 +218,7 @@
 
 </body>
 </html>
+
 
 
 
