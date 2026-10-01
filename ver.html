@@ -28,10 +28,10 @@
             align-items: center; 
             box-sizing: border-box;
             margin-top: 0px; 
-            position: relative; /* Contenedor ancla para controlar el botón */
+            position: relative;
         }
         
-        /* CONTAINER PARA EL BOTÓN ESTILIZADO "VOLVER" */
+        /* 🛠️ FIJACIÓN ABSOLUTA: El botón flota fijado en la pantalla sin estorbar al Captcha */
         .btn-volver-container {
             display: none; /* Inicia oculto hasta dar 'Si' */
             align-items: center;
@@ -40,8 +40,13 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
             width: fit-content;
-            position: relative; /* 📌 Cambiado a relativo para que se mueva JUNTO con la imagen */
-            z-index: 50; 
+            
+            position: fixed; /* 📌 RETOQUE: Flota estático sobre la pantalla en una coordenada fija */
+            z-index: 2000; /* Asegura que se vea por encima de la imagen gigante */
+            
+            /* 📐 POSICIÓN POR DEFECTO: Esquina superior izquierda de la pantalla */
+            top: 25px;   /* Distancia desde el borde superior de la pantalla */
+            left: 20px;  /* Distancia desde el borde izquierdo de la pantalla */
         }
         .btn-volver-container:hover {
             opacity: 0.8;
@@ -56,7 +61,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         /* Flecha blanca reducida y nítida */
         .arrow-white {
@@ -72,18 +77,19 @@
         .text-volver {
             color: #757575; 
             font-size: 15px;
-            font-weight: 500;
+            font-weight: bold;
             margin-left: 10px;
             letter-spacing: 0.5px;
+            text-shadow: 0px 0px 4px rgba(255,255,255,0.8); /* Sombra blanca para que se lea sobre cualquier fondo */
         }
         
-        /* CAPA INTERMEDIA FLOTANTE POPUP */
+        /* CAPA INTERMEDIA FLOTANTE POPUP POPUP CENTRADO */
         .overlay-captcha {
             display: flex; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.3); 
-            z-index: 1000;
+            z-index: 5000; /* Forzado por encima de todo */
             justify-content: center;
             align-items: flex-start; 
         }
@@ -149,12 +155,6 @@
                 display: none;
                 margin: 0 auto;
             }
-            
-            /* 📱 CALIBRACIÓN MÓVIL: Flota exactamente debajo del escudo en el teléfono */
-            .btn-volver-container { 
-                margin-top: -88vh !important; /* ↕️ Sube los píxeles necesarios para posicionarse sobre el escudo en el celular */
-                margin-left: -55vw !important; /* ↔️ Lo mueve hacia la izquierda del escudo en el celular */
-            }
         }
 
         /* 💻 2️⃣ REGLAS EXCLUSIVAS PARA PC (Contenido en Marco Elegante) */
@@ -178,12 +178,6 @@
                 border-radius: 4px;
                 display: none;
             }
-            
-            /* 💻 CALIBRACIÓN PC: Flota exactamente debajo del escudo en el monitor */
-            .btn-volver-container { 
-                margin-top: -76vh !important; /* ↕️ Ajuste de altura exclusivo para monitores de escritorio */
-                margin-left: -380px !important; /* ↔️ Ajuste lateral exclusivo para monitores de escritorio */
-            }
         }
     </style>
 </head>
@@ -193,24 +187,24 @@
     <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
-        <p>Has seleccionado no validar el documento.</p>
+        <p>Has nocturnal seleccionado no validar el documento.</p>
     </div>
 
     <!-- Imagen real omar.png física -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
-    
-    <!-- El botón "Volver" calibrado de forma independiente para PC y Móvil -->
-    <a id="redirectBtn" class="btn-volver-container" href="#" target="_blank">
-        <div class="circle-blue">
-            <svg class="arrow-white" viewBox="0 0 24 24">
-                <path d="M15 19l-7-7 7-7" />
-            </svg>
-        </div>
-        <div class="text-volver">Volver</div>
-    </a>
 </div>
 
-<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
+<!-- El botón "Volver" con fijación inteligente flotante sobre la pantalla -->
+<a id="redirectBtn" class="btn-volver-container" href="#" target="_blank">
+    <div class="circle-blue">
+        <svg class="arrow-white" viewBox="0 0 24 24">
+            <path d="M15 19l-7-7 7-7" />
+        </svg>
+    </div>
+    <div class="text-volver">Volver</div>
+</a>
+
+<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO CON MÁXIMA PRIORIDAD -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -260,16 +254,17 @@
 
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
+        const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
         const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
+            // SI SELECCIONA SÍ: Destruye el popup flotante y libera la visualización limpia de omar.png
             captchaOverlay.style.display = "none";
             mainImage.style.setProperty("display", "block", "important");
-
-
-
+            redirectBtn.style.setProperty("display", "inline-flex", "important");
+            
 
 
 
