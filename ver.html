@@ -64,7 +64,7 @@
             transform: translateY(-1px); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE */
+        /* CAPA INTERMEDIA FLOTANTE ALINEADA ARRIBA */
         .overlay-captcha {
             display: flex; 
             position: fixed;
@@ -85,31 +85,31 @@
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
-            margin-top: 12vh; /* Mantiene la posición elevada en la pantalla */
+            margin-top: 8vh; /* Se sube un poco más para dar espacio al tamaño masivo */
         }
         
-        /* Barra azul superior interna del popup */
+        /* 🔵 RETOQUE: Barra azul superior el DOBLE de alta verticalmente (padding a 36px) */
         .modal-blue-title {
             background-color: #1565c0; 
             color: white;
-            padding: 18px 15px; 
+            padding: 36px 15px; /* Pasamos de 18px a 36px arriba y abajo */
             text-align: center;
         }
         .modal-blue-title h5 {
             margin: 0;
-            font-size: 1.2rem; 
+            font-size: 1.25rem; 
             font-weight: 500;
         }
         
-        /* 🔼 RETOQUE: Parte inferior blanca duplicada en su tamaño vertical (padding a 110px) */
+        /* ⚪ RETOQUE: Parte inferior blanca masiva ampliada verticalmente (padding a 170px) */
         .modal-body-content {
-            padding: 110px 25px; /* Duplicamos de 55px a 110px el espacio arriba y abajo */
+            padding: 170px 25px; /* Pasamos de 110px a 170px arriba y abajo para un fondo gigante */
             text-align: center;
         }
         .captcha-btn-container {
             display: flex;
             flex-direction: column;
-            gap: 16px; 
+            gap: 18px; 
             width: 100%;
             align-items: center;
         }
@@ -161,7 +161,6 @@
 </head>
 <body>
 
-<!-- CONTENEDOR DE LA IMAGEN (Se vuelve nítido al dar SÍ) -->
 <div id="mainContainer" class="container viewer-box" style="filter: blur(4px); opacity: 0.4;">
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
@@ -175,7 +174,7 @@
     <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
 </div>
 
-<!-- CAPA INTERMEDIA DE VALIDACIÓN (POPUP CON DOBLE ALTURA VERTICAL) -->
+<!-- CAPA INTERMEDIA DE VALIDACIÓN (RETOQUE: POPUP ULTRA GIGANTE) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -217,6 +216,7 @@
 
 </body>
 </html>
+
 
 
 
