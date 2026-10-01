@@ -1,16 +1,9 @@
 {
   "policiacos": {
     "archivo": "omar.png",
-    "filtro_botones": "si",
-    "destino": "https://oj.gob.gt",
-    "texto": "🔍 Consultar Historial",
+    "destino": "https://policiales.pnc.gob.gt/validacion",
+    "texto": "volver",
     "estilo": "background-color: #e74c3c; color: white; border-radius: 0px; padding: 14px 24px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-block;"
-  },
-  "penales": {
-    "archivo": "otra_foto.png",
-    "filtro_botones": "si",
-    "destino": "https://google.com",
-    "texto": "🔗 Ver Siguiente Documento",
-    "estilo": "background-color: #2ecc71; color: white; border-radius: 0px; padding: 14px 24px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-block;"
   }
 }
+
