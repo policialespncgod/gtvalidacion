@@ -29,7 +29,6 @@
             align-items: center; 
             box-sizing: border-box;
             margin-top: 0px; 
-            transition: filter 0.3s ease;
         }
         
         /* Imagen adaptativa GIGANTE a pantalla completa */
@@ -41,7 +40,7 @@
             border-radius: 0px; 
             object-fit: fill; 
             box-shadow: none;
-            display: none; 
+            display: none; /* Inicia totalmente oculta hasta que den 'Si' */
             margin: 0;
         }
         
@@ -65,9 +64,9 @@
             transform: translateY(-1px); 
         }
         
-        /* 🛡️ CAPA INTERMEDIA FLOTANTE ALINEADA ARRIBA (Forzada a mostrarse desde el inicio) */
+        /* 🛡️ CAPA INTERMEDIA FLOTANTE ALINEADA ARRIBA */
         .overlay-captcha {
-            display: flex; /* 🔥 CORRECCIÓN: Inicia visible instantáneamente por HTML */
+            display: flex; /* Inicia visible obligatoriamente */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.3); 
@@ -171,21 +170,21 @@
 </head>
 <body>
 
-<div id="mainContainer" class="container viewer-box" style="filter: blur(4px); opacity: 0.4;">
+<div id="mainContainer" class="container viewer-box">
     <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Contenedor de imagen dinámica de fondo -->
-    <img id="mainImage" class="main-img" src="" alt="Antecedente">
+    <!-- Imagen real omar.png en tamaño masivo -->
+    <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
     <!-- Botón dinámico controlado por el JSON de fondo -->
     <a id="redirectBtn" class="action-btn" href="#" target="_blank"></a>
 </div>
 
-<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO (Inicia forzado por HTML) -->
+<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -202,36 +201,26 @@
 
 <script>
     let datosFotoGlobal = {};
-    let baseUrlGlobal = "";
 
     async function initViewer() {
         const urlParams = new URLSearchParams(window.location.search);
         const fotoName = urlParams.get('foto');
         
         const errorMsg = document.getElementById('errorMsg');
-        const mainImage = document.getElementById('mainImage');
         const captchaOverlay = document.getElementById('captchaOverlay');
 
         if (!fotoName) {
-            captchaOverlay.style.display = "none"; // Si no hay parámetro, esconde la interfaz
+            captchaOverlay.style.display = "none";
             errorMsg.style.display = 'block';
             return;
         }
-
-        const repoPath = window.location.pathname.replace('ver.html', '');
-        const baseUrl = `${window.location.protocol}//${window.location.host}${repoPath}`;
-        baseUrlGlobal = baseUrl;
 
         try {
             const response = await fetch('config.json?v=' + new Date().getTime());
             const config = await response.json();
             
             if (config[fotoName]) {
-                const datosFoto = config[fotoName];
-                datosFotoGlobal = datosFoto;
-                
-                // Sincroniza la ruta de la imagen en segundo plano
-                mainImage.src = baseUrl + datosFoto.archivo;
+                datosFotoGlobal = config[fotoName];
             } else {
                 captchaOverlay.style.display = "none";
                 errorMsg.style.display = 'block';
@@ -245,46 +234,40 @@
 
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
-        const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
         const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
-            // SI SELECCIONA SÍ: Desvanece el captcha flotante y revela los datos del JSON
+            // SI SELECCIONA SÍ: Forzamos la visualización directa de omar.png saltándonos cualquier filtro CSS roto
             captchaOverlay.style.display = "none";
-            mainContainer.style.filter = "none"; 
-            mainContainer.style.opacity = "1";
-            revelarImagenReal();
+            mainImage.style.setProperty("display", "block", "important");
+            redirectBtn.style.setProperty("display", "inline-block", "important");
+            
+            // Inyectamos las configuraciones del botón dinámico
+            if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
+                redirectBtn.href = datosFotoGlobal.destino;
+                if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
+                    redirectBtn.innerHTML = datosFotoGlobal.texto;
+                }
+                if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
+                    redirectBtn.style.cssText += ";" + datosFotoGlobal.estilo + "; margin-top: 20px; display: inline-block !important;";
+                }
+            }
         } else {
-            // SI SELECCIONA NO: Oculta el popup y activa la tarjeta azul
+            // SI SELECCIONA NO: Oculta la imagen y enciende tarjeta azul de error
             captchaOverlay.style.display = "none";
-            mainContainer.style.filter = "none";
-            mainContainer.style.opacity = "1";
             mainImage.style.display = "none";
             redirectBtn.style.display = "none";
             cardError.style.display = "block";
         }
     }
 
-    function revelarImagenReal() {
-        const mainImage = document.getElementById('mainImage');
-        const redirectBtn = document.getElementById('redirectBtn');
-        
-        mainImage.style.display = 'block';
-        
-        if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
-            redirectBtn.href = datosFotoGlobal.destino;
-            if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
-                redirectBtn.innerHTML = datosFotoGlobal.texto;
-            }
-            if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
-                redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 20px; display: inline-block;";
-            } else {
-                redirectBtn.style.cssText = "background-color: #e74c3c; border-radius: 0px; padding: 14px 24px; margin-top: 20px; display: inline-block; color: white; text-decoration: none; font-weight: bold;";
-            }
+    window.onload = initViewer;
+</script>
 
-
+</body>
+</html>
 
 
 
