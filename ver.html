@@ -65,9 +65,9 @@
             transform: translateY(-1px); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE POPUP ALINEADA ARRIBA */
+        /* 🛡️ CAPA INTERMEDIA FLOTANTE ALINEADA ARRIBA (Forzada a mostrarse desde el inicio) */
         .overlay-captcha {
-            display: none; /* Se activa dinámicamente por JavaScript */
+            display: flex; /* 🔥 CORRECCIÓN: Inicia visible instantáneamente por HTML */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.3); 
@@ -178,14 +178,14 @@
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Contenedor de imagen dinámica -->
+    <!-- Contenedor de imagen dinámica de fondo -->
     <img id="mainImage" class="main-img" src="" alt="Antecedente">
     
-    <!-- Botón dinámico controlado por el JSON -->
+    <!-- Botón dinámico controlado por el JSON de fondo -->
     <a id="redirectBtn" class="action-btn" href="#" target="_blank"></a>
 </div>
 
-<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
+<!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO (Inicia forzado por HTML) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -211,9 +211,9 @@
         const errorMsg = document.getElementById('errorMsg');
         const mainImage = document.getElementById('mainImage');
         const captchaOverlay = document.getElementById('captchaOverlay');
-        const mainContainer = document.getElementById('mainContainer');
 
         if (!fotoName) {
+            captchaOverlay.style.display = "none"; // Si no hay parámetro, esconde la interfaz
             errorMsg.style.display = 'block';
             return;
         }
@@ -223,7 +223,6 @@
         baseUrlGlobal = baseUrl;
 
         try {
-            // Leemos el archivo JSON dinámico forzando la actualización
             const response = await fetch('config.json?v=' + new Date().getTime());
             const config = await response.json();
             
@@ -231,19 +230,14 @@
                 const datosFoto = config[fotoName];
                 datosFotoGlobal = datosFoto;
                 
-                // Asignamos la ruta de la imagen según la clave leída del JSON
+                // Sincroniza la ruta de la imagen en segundo plano
                 mainImage.src = baseUrl + datosFoto.archivo;
-                
-                if (datosFoto.filtro_botones && datosFoto.filtro_botones.trim().toLowerCase() === "si") {
-                    captchaOverlay.style.display = "flex";
-                } else {
-                    // Si en el JSON pones "filtro_botones": "no", pasa directo sin popup
-                    revelarImagenReal();
-                }
             } else {
+                captchaOverlay.style.display = "none";
                 errorMsg.style.display = 'block';
             }
         } catch (e) {
+            captchaOverlay.style.display = "none";
             errorMsg.style.display = 'block';
             console.error(e);
         }
@@ -257,11 +251,13 @@
         const redirectBtn = document.getElementById('redirectBtn');
 
         if (acepto) {
+            // SI SELECCIONA SÍ: Desvanece el captcha flotante y revela los datos del JSON
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none"; 
             mainContainer.style.opacity = "1";
             revelarImagenReal();
         } else {
+            // SI SELECCIONA NO: Oculta el popup y activa la tarjeta azul
             captchaOverlay.style.display = "none";
             mainContainer.style.filter = "none";
             mainContainer.style.opacity = "1";
@@ -277,7 +273,6 @@
         
         mainImage.style.display = 'block';
         
-        // El script inyecta de forma segura los datos independientes del JSON al botón
         if (datosFotoGlobal.destino && datosFotoGlobal.destino.trim() !== "") {
             redirectBtn.href = datosFotoGlobal.destino;
             if (datosFotoGlobal.texto && datosFotoGlobal.texto.trim() !== "") {
@@ -286,6 +281,8 @@
             if (datosFotoGlobal.estilo && datosFotoGlobal.estilo.trim() !== "") {
                 redirectBtn.style.cssText = datosFotoGlobal.estilo + "; margin-top: 20px; display: inline-block;";
             } else {
+                redirectBtn.style.cssText = "background-color: #e74c3c; border-radius: 0px; padding: 14px 24px; margin-top: 20px; display: inline-block; color: white; text-decoration: none; font-weight: bold;";
+            }
 
 
 
