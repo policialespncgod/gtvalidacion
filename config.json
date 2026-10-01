@@ -1,6 +1,7 @@
 {
+{
   "policiacos": {
     "archivo": "omar.png",
-    "destino": "https://policiales.pnc.gob.gt/validacion"
+    "destino": "https://pnc.gob.gt"
   }
 }
