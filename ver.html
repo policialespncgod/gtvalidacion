@@ -12,7 +12,7 @@
             align-items: flex-start; 
             min-height: 100vh; 
             margin: 0; 
-            background-color: #ffffff; /* Fondo general de la página en blanco puro solicitado */
+            background-color: #ffffff; 
             padding: 20px; 
             box-sizing: border-box; 
             position: relative;
@@ -64,7 +64,7 @@
             transform: translateY(-1px); 
         }
         
-        /* 🛡️ CAPA INTERMEDIA FLOTANTE (RETOQUE: Alineación superior para empujar el popup hacia arriba) */
+        /* CAPA INTERMEDIA FLOTANTE */
         .overlay-captcha {
             display: flex; 
             position: fixed;
@@ -72,7 +72,7 @@
             background-color: rgba(0, 0, 0, 0.3); 
             z-index: 1000;
             justify-content: center;
-            align-items: flex-start; /* 🔼 RETOQUE: Alineado al inicio (arriba) para controlar la posición exacta */
+            align-items: flex-start; 
         }
         
         /* Caja flotante (Popup centrado) */
@@ -85,7 +85,7 @@
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
-            margin-top: 12vh; /* 🔼 RETOQUE: Posiciona la ventana un 25% más hacia arriba en la pantalla */
+            margin-top: 12vh; /* Mantiene la posición elevada en la pantalla */
         }
         
         /* Barra azul superior interna del popup */
@@ -101,15 +101,15 @@
             font-weight: 500;
         }
         
-        /* 🔼 RETOQUE: Parte inferior blanca ampliada verticalmente para un fondo más espacioso */
+        /* 🔼 RETOQUE: Parte inferior blanca duplicada en su tamaño vertical (padding a 110px) */
         .modal-body-content {
-            padding: 55px 25px; /* Incrementamos el padding vertical a 55px (antes era 35px) */
+            padding: 110px 25px; /* Duplicamos de 55px a 110px el espacio arriba y abajo */
             text-align: center;
         }
         .captcha-btn-container {
             display: flex;
             flex-direction: column;
-            gap: 16px; /* ↕️ Un poco más de separación entre los botones */
+            gap: 16px; 
             width: 100%;
             align-items: center;
         }
@@ -131,13 +131,13 @@
         .btn-no:hover {
             background-color: #64748b;
         }
-        /* 🍊 RETOQUE: Botón Si de color anaranjado abajo */
+        /* Botón Si (Naranja) abajo */
         .btn-si {
-            background-color: #ff9800; /* Naranja oficial de Materialize PNC */
+            background-color: #ff9800; 
             color: white;
         }
         .btn-si:hover {
-            background-color: #e65100; /* Tono naranja oscuro al pasar el cursor */
+            background-color: #e65100; 
         }
         
         /* Tarjeta de error si selecciona NO */
@@ -161,6 +161,7 @@
 </head>
 <body>
 
+<!-- CONTENEDOR DE LA IMAGEN (Se vuelve nítido al dar SÍ) -->
 <div id="mainContainer" class="container viewer-box" style="filter: blur(4px); opacity: 0.4;">
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
@@ -174,7 +175,7 @@
     <a id="redirectBtn" class="action-btn" href="https://oj.gob.gt" target="_blank">🔍 Consultar Historial</a>
 </div>
 
-<!-- CAPA INTERMEDIA DE VALIDACIÓN (RETOQUE: POPUP FLOTANTE MÁS ALTO Y CON ESPACIO AMPLIADO) -->
+<!-- CAPA INTERMEDIA DE VALIDACIÓN (POPUP CON DOBLE ALTURA VERTICAL) -->
 <div id="captchaOverlay" class="overlay-captcha">
     <div class="captcha-box" id="captchaBox">
         <div class="modal-blue-title">
@@ -216,6 +217,7 @@
 
 </body>
 </html>
+
 
 
 
