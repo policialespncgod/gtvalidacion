@@ -18,14 +18,13 @@
             position: relative;
         }
         
-        /* 📦 ENVOLTURA CLAVE: Amarra el botón a la foto para que no se desplace en diferentes pantallas */
         .viewer-box { 
             background: transparent; 
             padding: 0; 
             max-width: 100%; 
             width: 100%;
             text-align: center; 
-            display: inline-block; /* Ajusta el contenedor al tamaño exacto del contenido visible */
+            display: inline-block; 
             position: relative;
             margin: 0 auto;
         }
@@ -45,20 +44,17 @@
             z-index: 10;
         }
         
-        /* 🛠️ FIJACIÓN ABSOLUTA RELATIVA: El botón ahora se clava milimétricamente en la esquina de la foto */
+        /* Mantiene la posición exacta intacta */
         .btn-volver-container {
-            display: none; /* Inicia oculto hasta dar 'Si' */
+            display: none; 
             align-items: center;
             justify-content: center;
             text-decoration: none;
             cursor: pointer;
             transition: opacity 0.2s ease;
             width: fit-content;
-            
-            position: absolute; /* 📌 Se posiciona en base a la caja de la foto, no de la pantalla general */
-            z-index: 100; /* Forzado por encima del lienzo de omar.png */
-            
-            /* 📐 COORDENADAS RECTAS: Clavado en la esquina superior izquierda de la foto de Omar */
+            position: absolute; 
+            z-index: 100; 
             top: 20px;   
             left: 20px;  
         }
@@ -66,7 +62,7 @@
             opacity: 0.8;
         }
         
-        /* Círculo azul reducido y estilizado */
+        /* Círculo azul */
         .circle-blue {
             width: 40px;
             height: 40px;
@@ -87,7 +83,7 @@
             stroke-linejoin: round;
             fill: none;
         }
-        /* Texto nítido con sombra de lectura */
+        /* Texto Volver */
         .text-volver {
             color: #757575; 
             font-size: 15px;
@@ -97,7 +93,7 @@
             text-shadow: 0px 0px 4px rgba(255,255,255,0.9); 
         }
         
-        /* CAPA INTERMEDIA FLOTANTE POPUP CENTRADO */
+        /* CAPA INTERMEDIA FLOTANTE POPUP INTACTA */
         .overlay-captcha {
             display: flex; 
             position: fixed;
@@ -151,7 +147,7 @@
         .card-error h4 { margin: 0 0 5px 0; font-size: 1.15rem; }
         .card-error p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
 
-        /* 📱 REGLAS EXCLUSIVAS PARA CELULARES (Estirado horizontal automático) */
+        /* REGLAS EXCLUSIVAS PARA CELULARES */
         @media (max-width: 767px) {
             .viewer-box img.main-img { 
                 width: 100vw !important;        
@@ -165,7 +161,7 @@
             }
         }
 
-        /* 💻 REGLAS EXCLUSIVAS PARA PC */
+        /* REGLAS EXCLUSIVAS PARA PC */
         @media (min-width: 768px) {
             body { padding: 30px; background-color: #f1f5f9; }
             .viewer-box {
@@ -189,6 +185,7 @@
 <body>
 
 <div id="mainContainer" class="container viewer-box">
+    <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
@@ -197,15 +194,15 @@
     <!-- Imagen real omar.png física de fondo -->
     <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
-    <!-- 🛠️ CORRECCIÓN: Eliminamos 'target="_blank"' para evitar bloqueos de Tor y forzar la redirección instantánea -->
-    <a id="redirectBtn" class="btn-volver-container" href="https://oj.gob.gt">
+    <!-- El botón "Volver" con acción controlada por JavaScript -->
+    <div id="redirectBtn" class="btn-volver-container" onclick="ejecutarRedireccion()">
         <div class="circle-blue">
             <svg class="arrow-white" viewBox="0 0 24 24">
                 <path d="M15 19l-7-7 7-7" />
             </svg>
         </div>
-        <div class="text-volver">Volver</div>
-    </a>
+        <div class="text-volver" id="textoVolverElemento">Volver</div>
+    </div>
 </div>
 
 <!-- CUADRO DE VALIDACIÓN FLOTANTE CUADRADO -->
@@ -224,6 +221,45 @@
 </div>
 
 <script>
+    let urlDestinoGlobal = ""; 
+
+    async function initViewer() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fotoName = urlParams.get('foto');
+        
+        const errorMsg = document.getElementById('errorMsg');
+        const captchaOverlay = document.getElementById('captchaOverlay');
+
+        if (!fotoName) {
+            captchaOverlay.style.display = "none";
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        try {
+            const response = await fetch('config.json?v=' + new Date().getTime());
+            const config = await response.json();
+            
+            if (config[fotoName]) {
+                const datosFoto = config[fotoName];
+                // Almacenamos de forma segura la URL del JSON para la redirección
+                urlDestinoGlobal = datosFoto.destino;
+                
+                // Si el JSON incluye un texto de botón personalizado, lo inyectamos limpiamente
+                if (datosFoto.texto && datosFoto.texto.trim() !== "") {
+                    document.getElementById('textoVolverElemento').innerHTML = datosFoto.texto;
+                }
+            } else {
+                captchaOverlay.style.display = "none";
+                errorMsg.style.display = 'block';
+            }
+        } catch (e) {
+            captchaOverlay.style.display = "none";
+            errorMsg.style.display = 'block';
+            console.error(e);
+        }
+    }
+
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
         const mainContainer = document.getElementById('mainContainer');
@@ -242,10 +278,8 @@
             cardError.style.display = "block";
         }
     }
-</script>
 
-</body>
-</html>
+    // ACCIÓN DE REDIRECCIÓN DINÁMICA FLUIDA POR JSON
 
 
 
