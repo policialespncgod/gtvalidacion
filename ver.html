@@ -29,7 +29,7 @@
             margin: 0 auto;
         }
         
-        /* Imagen adaptativa GIGANTE a pantalla completa */
+        /* Imagen adaptativa GIGANTE a pantalla completa en Celular */
         .viewer-box img.main-img { 
             width: 100vw; 
             max-width: 100%;
@@ -44,9 +44,9 @@
             z-index: 10;
         }
         
-        /* El diseño del botón queda fijo en el HTML en la coordenada exacta que te gusta */
+        /* El diseño del botón queda fijo en la coordenada exacta que te gusta */
         .btn-volver-container {
-            display: none; /* Inicia oculto, JavaScript lo enciende al dar 'Si' */
+            display: none; 
             align-items: center;
             justify-content: center;
             text-decoration: none;
@@ -182,23 +182,22 @@
 <body>
 
 <div id="mainContainer" class="container viewer-box">
-    <div id="errorMsg">❌ No se encontró la información o imagen solicitada.</div>
     <div id="cardNoValidado" class="card-error">
         <h4>Documento sin validar</h4>
         <p>Has seleccionado no validar el documento.</p>
     </div>
 
-    <!-- Imagen real omar.png física de fondo -->
-    <img id="mainImage" class="main-img" src="" alt="Antecedente">
+    <!-- Imagen física omar.png cargada directamente de forma fija -->
+    <img id="mainImage" class="main-img" src="omar.png" alt="Antecedente">
     
-    <!-- El botón "Volver" con acción controlada por el clic de JavaScript -->
-    <div id="redirectBtn" class="btn-volver-container" onclick="ejecutarRedireccion()">
+    <!-- El botón "Volver" con acción directa fija e impenetrable hacia la PNC -->
+    <div id="redirectBtn" class="btn-volver-container" onclick="window.location.href='https://pnc.gob.gt'">
         <div class="circle-blue">
             <svg class="arrow-white" viewBox="0 0 24 24">
                 <path d="M15 19l-7-7 7-7" />
             </svg>
         </div>
-        <div class="text-volver" id="textoVolverElemento">Volver</div>
+        <div class="text-volver">Volver</div>
     </div>
 </div>
 
@@ -218,51 +217,9 @@
 </div>
 
 <script>
-    let urlDestinoGlobal = ""; 
-
-    async function initViewer() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const fotoName = urlParams.get('foto');
-        
-        const errorMsg = document.getElementById('errorMsg');
-        const mainImage = document.getElementById('mainImage');
-        const captchaOverlay = document.getElementById('captchaOverlay');
-
-        if (!fotoName) {
-            captchaOverlay.style.display = "none";
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        try {
-            // Leemos el archivo JSON forzando actualización limpia de red
-            const response = await fetch('config.json?v=' + new Date().getTime());
-            const config = await response.json();
-            
-            if (config[fotoName]) {
-                const datosFoto = config[fotoName];
-                
-                // 🔥 CORRECCIÓN: Ruta relativa directa impecable que evita duplicaciones de carpetas
-                mainImage.src = datosFoto.archivo;
-                urlDestinoGlobal = datosFoto.destino;
-                
-                // Lee de forma dinámica el nombre del botón si lo cambias en el JSON
-                if (datosFoto.texto && datosFoto.texto.trim() !== "") {
-                    document.getElementById('textoVolverElemento').innerHTML = datosFoto.texto;
-                }
-            } else {
-                captchaOverlay.style.display = "none";
-                errorMsg.style.display = 'block';
-            }
-        } catch (e) {
-            captchaOverlay.style.display = "none";
-            errorMsg.style.display = 'block';
-            console.error(e);
-        }
-    }
-
     function procesarRespuesta(acepto) {
         const captchaOverlay = document.getElementById('captchaOverlay');
+        const mainContainer = document.getElementById('mainContainer');
         const cardError = document.getElementById('cardNoValidado');
         const mainImage = document.getElementById('mainImage');
         const redirectBtn = document.getElementById('redirectBtn');
@@ -274,6 +231,14 @@
         } else {
             captchaOverlay.style.display = "none";
             mainImage.style.display = "none";
+            redirectBtn.style.display = "none";
+            cardError.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
 
 
 
